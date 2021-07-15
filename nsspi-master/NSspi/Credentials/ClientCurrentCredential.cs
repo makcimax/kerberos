@@ -3,15 +3,15 @@
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Represents a handle to the credentials of the user running the current process, to be used to
-    /// authenticate as a client.
+    /// Представляет дескриптор учетных данных пользователя, запускающего текущий процесс, который будет использоваться для
+    /// аутентифицируемся как клиент. 
     /// </summary>
     public class ClientCurrentCredential : CurrentCredential
     {
         /// <summary>
-        /// Initializes a new instance of the ClientCurrentCredential class.
+        /// Инициализирует новый экземпляр класса ClientCurrentCredential. 
         /// </summary>
-        /// <param name="package">The security package to acquire the credential handle from.</param>
+        /// <param name="package">Пакет безопасности, от которого требуется получить дескриптор учетных данных. </param>
         public ClientCurrentCredential( string package )
             : base( package, CredentialUse.Outbound )
         {

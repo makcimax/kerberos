@@ -4,14 +4,14 @@ using System.Runtime.InteropServices;
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Stores the result from a query of a credential's principle name.
+    /// Сохраняет результат запроса имени субъекта учетных данных. 
     /// </summary>
     [StructLayout( LayoutKind.Sequential )]
     internal struct QueryNameAttribCarrier
     {
         /// <summary>
-        /// A pointer to a null-terminated ascii-encoded containing the principle name
-        /// associated with a credential
+        /// Указатель на ascii-код с завершающим нулем, содержащий имя принципа
+        /// связанного с учетными данными 
         /// </summary>
         public IntPtr Name;
     }

@@ -5,16 +5,16 @@ using System.Threading;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Represents impersonation performed on a server on behalf of a client.
+    /// Представляет олицетворение, выполняемое на сервере от имени клиента. 
     /// </summary>
     /// <remarks>
-    /// The handle controls the lifetime of impersonation, and will revert the impersonation
-    /// if it is disposed, or if it is finalized ie by being leaked and garbage collected.
+    /// Дескриптор контролирует время жизни олицетворения и отменит олицетворение.
+    /// если он удален, или если он завершен, то есть в результате утечки и сбора мусора. 
     ///
-    /// If the handle is accidentally leaked while operations are performed on behalf of the user,
-    /// impersonation may be reverted at any arbitrary time, perhaps during those operations.
-    /// This may lead to operations being performed in the security context of the server,
-    /// potentially leading to security vulnerabilities.
+    /// Если дескриптор случайно просочился во время выполнения операций от имени пользователя,
+    /// олицетворение может быть отменено в любой момент, возможно, во время этих операций.
+    /// Это может привести к выполнению операций в контексте безопасности сервера,
+    /// потенциально может привести к уязвимостям безопасности. 
     /// </remarks>
     public class ImpersonationHandle : IDisposable
     {
@@ -23,9 +23,9 @@ namespace NSspi.Contexts
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the ImpersonationHandle. Does not perform impersonation.
+        /// Инициализирует новый экземпляр ImpersonationHandle. Не выполняет олицетворение. 
         /// </summary>
-        /// <param name="server">The server context that is performing impersonation.</param>
+        /// <param name="server">Контекст сервера, выполняющий олицетворение. </param>
         internal ImpersonationHandle( ServerContext server )
         {
             this.server = server;
@@ -33,7 +33,7 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Finalizes the ImpersonationHandle by reverting the impersonation.
+        /// Завершает ImpersonationHandle, отменяя олицетворение. 
         /// </summary>
         ~ImpersonationHandle()
         {
@@ -41,7 +41,7 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Reverts impersonation.
+        /// Отменяет выдачу себя за другое лицо. 
         /// </summary>
         public void Dispose()
         {
@@ -50,20 +50,20 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Reverts impersonation.
+        /// Отменяет выдачу себя за другое лицо. 
         /// </summary>
         /// <param name="disposing">True if being disposed, false if being finalized.</param>
         private void Dispose( bool disposing )
         {
-            // This implements a variant of the typical dispose pattern. Always try to revert
-            // impersonation, even if finalizing. Don't do anything if we're already reverted.
+            // Это реализует вариант типичного шаблона удаления. Всегда пытайтесь вернуться
+            // олицетворение, даже после завершения. Не делайте ничего, если мы уже вернулись. 
 
-            if( this.disposed == false )
+            if ( this.disposed == false )
             {
                 this.disposed = true;
 
-                // Just in case the reference is being pulled out from under us, pull a stable copy
-                // of the reference while we're null-checking.
+                //На всякий случай, если ссылка вытаскивается, достает стабильную копию
+                // ссылки, пока проверяется значение NULL. 
                 var serverCopy = this.server;
 
                 if( serverCopy != null && serverCopy.Disposed == false )

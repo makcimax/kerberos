@@ -6,37 +6,37 @@ using System.Runtime.InteropServices;
 namespace NSspi.Buffers
 {
     /// <summary>
-    /// Prepares SecureBuffers for providing them to native API calls.
+    /// Подготавливает SecureBuffers для предоставления их собственным вызовам API.
     /// </summary>
     /// <remarks>
-    /// The native APIs consume lists of buffers, with each buffer indicating its type or purpose.
+    /// Собственные API используют списки буферов, каждый из которых указывает его тип или назначение. 
     ///
-    /// The buffers themselves are simple byte arrays, and the native APIs consume arrays of buffers.
+    /// Сами буферы представляют собой простые байтовые массивы, а собственные API-интерфейсы используют массивы буферов. 
     ///
-    /// Since winapi calling convention, perhaps as an extension of C calling convention, does not
-    /// provide a standard convention means of communicating the length of any array, custom structures
-    /// must be created to carry the buffer length and usage.
+    /// Поскольку соглашение о вызовах winapi, возможно, как расширение соглашения о вызовах C, не
+    /// предоставляет стандартное соглашение, обозначающее длину любого массива, пользовательские структуры
+    /// должны быть созданы для переноса длины и использования буфера. 
     ///
-    /// Not only does the API need to know how long each buffer is, and how long the array of buffers is,
-    /// it needs to communicate back how much of each buffer was filled; we may provide it a token buffer
-    /// that is 12288 bytes long, but it might only use 125 bytes of that, which we need a way of knowing.
+    /// API не только должен знать длину каждого буфера и массив буферов,
+    /// ему нужно сообщить, сколько из каждого буфера было заполнено;  можем предоставить ему токен-буфер
+    /// длиной 12288 байт, но он может использовать только 125 байт, которые нужно узнать. 
     ///
-    /// As a result of this, the API requires byte arrays to be carried in structs that are natively known as
-    /// SecureBuffers (known as SecureBufferInternal in this project), and then arrays of SecureBuffers are
-    /// carried in a SecureBufferDescriptor structure.
+    ///В результате API требует, чтобы массивы байтов переносились в структуры, которые изначально известны как
+    /// SecureBuffers (известные в этом проекте как SecureBufferInternal), а затем массивы SecureBuffers
+    /// переносится в структуре SecureBufferDescriptor. 
     ///
-    /// As such, this class has to do a significant amount of marshaling work just to get the buffers back and
-    /// forth to the native APIs.
-    ///   * We have to pin all buffers
-    ///   * We have to pin the array of buffers
-    ///   * We have to obtain IntPtr handles to each of the buffers and to the array of buffers.
-    ///   * Since we provide EasyToUse SecureBuffer classes from the rest of the project, but we
-    ///     provide SecureBufferInternal structures from the native API, we have to copy back values
-    ///     from the SecureBufferInternal structs to our SecureBuffer class.
+    /// Таким образом, этот класс должен проделать значительный объем работы по маршалингу, чтобы вернуть буферы и
+    /// к собственным API.
+    /// * Мы должны закрепить все буферы
+    /// * Мы должны закрепить массив буферов
+    /// * Мы должны получить дескрипторы IntPtr для каждого из буферов и для массива буферов.
+    /// * Поскольку мы предоставляем классы EasyToUse SecureBuffer из остальной части проекта, но мы
+    /// предоставляем структуры SecureBufferInternal из собственного API, мы должны скопировать обратно значения
+    /// из структур SecureBufferInternal в наш класс SecureBuffer. 
     ///
-    /// To make this class easy to use, it accepts either one or many buffers as its constructor; and
-    /// implements IDisposable to know when to marshal values back from the unmanaged structures and to
-    /// release pinned handles.
+    /// Чтобы упростить использование этого класса, он принимает в качестве конструктора один или несколько буферов; а также
+    /// реализует IDisposable, чтобы знать, когда маршалировать значения обратно из неуправляемых структур и в
+    /// освобождаем закрепленные ручки. 
     ///
     /// Additionally, in case the adapter is leaked without disposing, the adapter implements a Critical
     /// Finalizer, to ensure that the GCHandles are released, else we will permanently pin handles.

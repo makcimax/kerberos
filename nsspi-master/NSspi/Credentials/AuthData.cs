@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Provides authentication data in native method calls.
+    /// Предоставляет данные аутентификации в вызовах собственных методов. 
     /// </summary>
     /// <remarks>
-    /// Implements the 'SEC_WINNT_AUTH_IDENTITY' structure. See:
+    /// Реализует структуру SEC_WINNT_AUTH_IDENTITY
     ///
     /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa380131(v=vs.85).aspx
     /// </remarks>

@@ -3,138 +3,138 @@
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Defines options for creating a security context via win32 InitializeSecurityContext
-    /// (used by clients) and AcceptSecurityContext (used by servers).
-    /// Required attribute flags are specified when creating the context. InitializeSecurityContext
-    /// and AcceptSecurityContext returns a value indicating what final attributes the created context
-    /// actually has.
+    /// Определяет параметры для создания контекста безопасности через win32 InitializeSecurityContext
+    /// (используется клиентами) и AcceptSecurityContext (используется серверами).
+    /// Обязательные флаги атрибутов указываются при создании контекста. InitializeSecurityContext
+    /// и AcceptSecurityContext возвращает значение, указывающее, какие окончательные атрибуты созданы для контекста.
+    /// на самом деле имеет. 
     /// </summary>
     [Flags]
     public enum ContextAttrib : int
     {
         /// <summary>
-        /// No additional attributes are provided.
+        /// Никаких дополнительных атрибутов не предусмотрено. 
         /// </summary>
         Zero = 0,
 
         /// <summary>
-        /// The server can use the context to authenticate to other servers as the client. The
-        /// MutualAuth flag must be set for this flag to work. Valid for Kerberos. Ignore this flag for
-        /// constrained delegation.
+        /// Сервер может использовать контекст для аутентификации на других серверах в качестве клиента. В
+        /// Флаг MutualAuth должен быть установлен, чтобы этот флаг работал. Действительно для Kerberos. Игнорировать этот флаг для
+        /// ограниченное делегирование. 
         /// </summary>
         Delegate = 0x00000001,
 
         /// <summary>
-        /// The mutual authentication policy of the service will be satisfied.
-        /// *Caution* - This does not necessarily mean that mutual authentication is performed, only that
-        /// the authentication policy of the service is satisfied. To ensure that mutual authentication is
-        /// performed, query the context attributes after it is created.
+        /// Политика взаимной аутентификации службы будет удовлетворена.
+        /// * Внимание * - это не обязательно означает, что выполняется взаимная аутентификация, только то, что
+        /// политика аутентификации службы удовлетворена. Чтобы обеспечить взаимную аутентификацию
+        /// выполняется запрос атрибутов контекста после его создания. 
         /// </summary>
         MutualAuth = 0x00000002,
 
         /// <summary>
-        /// Detect replayed messages that have been encoded by using the EncryptMessage or MakeSignature
-        /// message support functionality.
+        /// Обнаружение воспроизводимых сообщений, которые были закодированы с помощью EncryptMessage или MakeSignature.
+        /// функция поддержки сообщений. 
         /// </summary>
         ReplayDetect = 0x00000004,
 
         /// <summary>
-        /// Detect messages received out of sequence when using the message support functionality.
-        /// This flag implies all of the conditions specified by the Integrity flag - out-of-order sequence
-        /// detection can only be trusted if the integrity of any underlying sequence detection mechanism
-        /// in transmitted data can be trusted.
+        /// Обнаружение сообщений, полученных не по порядку, при использовании функции поддержки сообщений.
+        /// Этот флаг подразумевает все условия, указанные в флаге целостности - неупорядоченная последовательность
+        /// обнаружению можно доверять только в том случае, если целостность любого основного механизма обнаружения последовательности
+        /// в передаваемых данных можно доверять. 
         /// </summary>
         SequenceDetect = 0x00000008,
 
-        // The context must protect data while in transit.
-        // Confidentiality is supported for NTLM with Microsoft
-        // Windows NT version 4.0, SP4 and later and with the
-        // Kerberos protocol in Microsoft Windows 2000 and later.
+        // Контекст должен защищать данные во время передачи.
+        // Конфиденциальность поддерживается для NTLM с Microsoft
+        // Windows NT версии 4.0, SP4 и выше и с
+        // Протокол Kerberos в Microsoft Windows 2000 и новее. 
 
         /// <summary>
-        /// The context must protect data while in transit. Encrypt messages by using the EncryptMessage function.
+        /// Контекст должен защищать данные во время передачи. Шифруйте сообщения с помощью функции EncryptMessage. 
         /// </summary>
         Confidentiality = 0x00000010,
 
         /// <summary>
-        /// A new session key must be negotiated.
-        /// This value is supported only by the Kerberos security package.
+        /// Необходимо согласовать новый сеансовый ключ.
+        /// Это значение поддерживается только пакетом безопасности Kerberos. 
         /// </summary>
         UseSessionKey = 0x00000020,
 
         /// <summary>
-        /// The security package allocates output buffers for you. Buffers allocated by the security package have
-        /// to be released by the context memory management functions.
+        /// Пакет безопасности выделяет для вас выходные буферы. Буферы, выделенные пакетом безопасности, имеют
+        /// будет освобождено функциями управления контекстной памятью. 
         /// </summary>
         AllocateMemory = 0x00000100,
 
         /// <summary>
-        /// The security context will not handle formatting messages. This value is the default for the Kerberos,
-        /// Negotiate, and NTLM security packages.
+        /// Контекст безопасности не обрабатывает сообщения форматирования. Это значение по умолчанию для Kerberos,
+        /// Negotiate и пакетов безопасности NTLM. 
         /// </summary>
         Connection = 0x00000800,
 
         /// <summary>
-        /// When errors occur, the remote party will be notified.
+        ///При возникновении ошибок удаленная сторона будет уведомлена.
         /// </summary>
         /// <remarks>
-        /// A client specifies InitExtendedError in InitializeSecurityContext
-        /// and the server specifies AcceptExtendedError in AcceptSecurityContext.
+        /// Клиент указывает InitExtendedError в InitializeSecurityContext
+        /// и сервер указывает AcceptExtendedError в AcceptSecurityContext.
         /// </remarks>
         InitExtendedError = 0x00004000,
 
         /// <summary>
-        /// When errors occur, the remote party will be notified.
+        /// При возникновении ошибок удаленная сторона будет уведомлена.
         /// </summary>
         /// <remarks>
-        /// A client specifies InitExtendedError in InitializeSecurityContext
-        /// and the server specifies AcceptExtendedError in AcceptSecurityContext.
+        /// Клиент указывает InitExtendedError в InitializeSecurityContext
+        /// и сервер указывает AcceptExtendedError в AcceptSecurityContext. 
         /// </remarks>
         AcceptExtendedError = 0x00008000,
 
         /// <summary>
-        /// Support a stream-oriented connection. Provided by clients.
+        /// Поддержка потокового подключения. Предоставляется клиентами.
         /// </summary>
         InitStream = 0x00008000,
 
         /// <summary>
-        /// Support a stream-oriented connection. Provided by servers.
+        /// Поддержка потокового подключения. Предоставляется серверами. 
         /// </summary>
         AcceptStream = 0x00010000,
 
         /// <summary>
-        /// Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.
-        /// Replayed and out-of-sequence messages will not be detected with the setting of this attribute.
-        /// Set ReplayDetect and SequenceDetect also if these behaviors are desired.
+        /// Подписывайте сообщения и проверяйте подписи с помощью функций EncryptMessage и MakeSignature.
+        /// Повторно воспроизведенные и неупорядоченные сообщения не будут обнаружены при установке этого атрибута.
+        /// Установите ReplayDetect и SequenceDetect также, если это поведение желательно. 
         /// </summary>
         InitIntegrity = 0x00010000,
 
         /// <summary>
-        /// Sign messages and verify signatures by using the EncryptMessage and MakeSignature functions.
-        /// Replayed and out-of-sequence messages will not be detected with the setting of this attribute.
-        /// Set ReplayDetect and SequenceDetect also if these behaviors are desired.
+        /// Подписывайте сообщения и проверяйте подписи с помощью функций EncryptMessage и MakeSignature.
+        /// Повторно воспроизведенные и неупорядоченные сообщения не будут обнаружены при установке этого атрибута.
+        /// Установите ReplayDetect и SequenceDetect также, если это поведение желательно. 
         /// </summary>
         AcceptIntegrity = 0x00020000,
 
         /// <summary>
-        /// Set by a client; indicates the context can only impersonate with limited privileges,
-        /// allowing the server only to identify the client when impersonating.
+        /// Устанавливается клиентом; указывает, что контекст может олицетворять только с ограниченными привилегиями,
+        /// разрешая серверу только идентифицировать клиента при олицетворении. 
         /// </summary>
         InitIdentify = 0x00020000,
 
         /// <summary>
-        /// Set by a server; indicates the context can only impersonate with limited privileges,
-        /// allowing the server only to identify the client when impersonating.
+        /// Устанавливается сервером; указывает, что контекст может олицетворять только с ограниченными привилегиями,
+        /// разрешая серверу только идентифицировать клиента при олицетворении. 
         /// </summary>
         AcceptIdentify = 0x00080000,
 
         /// <summary>
-        /// An Schannel provider connection is instructed to not authenticate the server automatically.
+        /// Соединение с поставщиком Schannel получает указание не аутентифицировать сервер автоматически. 
         /// </summary>
         InitManualCredValidation = 0x00080000,
 
         /// <summary>
-        /// An Schannel provider connection is instructed to not authenticate the client automatically.
+        /// Соединение с поставщиком Schannel получает указание не аутентифицировать клиента автоматически. 
         /// </summary>
         InitUseSuppliedCreds = 0x00000080,
     }

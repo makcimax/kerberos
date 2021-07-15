@@ -4,17 +4,16 @@ using System.Runtime.CompilerServices;
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Acquires a handle to the credentials of the user associated with the current process.
+    /// Получает дескриптор учетных данных пользователя, связанного с текущим процессом.
     /// </summary>
     public class CurrentCredential : Credential
     {
         /// <summary>
-        /// Initializes a new instance of the CurrentCredential class.
+        /// Инициализирует новый экземпляр класса CurrentCredential. 
         /// </summary>
-        /// <param name="securityPackage">The security package to acquire the credential handle
-        /// from.</param>
-        /// <param name="use">The manner in which the credentials will be used - Inbound typically
-        /// represents servers, outbound typically represent clients.</param>
+        /// <param name="securityPackage">Пакет безопасности для получения дескриптора учетных данных</param>
+        /// <param name="use">Способ использования учетных данных - входящий
+        /// представляет серверы, исходящие представляют клиентов. </param>
         public CurrentCredential( string securityPackage, CredentialUse use ) :
             base( securityPackage )
         {
@@ -27,15 +26,14 @@ namespace NSspi.Credentials
             TimeStamp rawExpiry = new TimeStamp();
             SecurityStatus status = SecurityStatus.InternalError;
 
-            // -- Package --
-            // Copy off for the call, since this.SecurityPackage is a property.
+            // Скопируем вызов, поскольку this.SecurityPackage является свойством. 
             packageName = this.SecurityPackage;
 
             this.Handle = new SafeCredentialHandle();
 
-            // The finally clause is the actual constrained region. The VM pre-allocates any stack space,
-            // performs any allocations it needs to prepare methods for execution, and postpones any
-            // instances of the 'uncatchable' exceptions (ThreadAbort, StackOverflow, OutOfMemory).
+            // Предложение finally - это фактическая ограниченная область. ВМ предварительно выделяет любое пространство стека,
+            // выполняет любые выделения, необходимые для подготовки методов к выполнению, и откладывает любые
+            // экземпляры «неуловимых» исключений (ThreadAbort, StackOverflow, OutOfMemory). 
             RuntimeHelpers.PrepareConstrainedRegions();
             try { }
             finally

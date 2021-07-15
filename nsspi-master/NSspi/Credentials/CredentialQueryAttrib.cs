@@ -3,12 +3,12 @@
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Identifies credential query types.
+    /// Определяет типы запросов к учетным данным.
     /// </summary>
     public enum CredentialQueryAttrib : uint
     {
         /// <summary>
-        /// Queries the credential's principle name.
+        /// Запрашивает основное имя учетных данных.
         /// </summary>
         Names = 1,
     }

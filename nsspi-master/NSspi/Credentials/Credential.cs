@@ -5,34 +5,34 @@ using System.Runtime.InteropServices;
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Provides access to the pre-existing credentials of a security principle.
+    /// Предоставляет доступ к уже существующим учетным данным принципа безопасности. 
     /// </summary>
     public class Credential : IDisposable
     {
         /// <summary>
-        /// The name of the security package that controls the credential.
+        /// Имя пакета безопасности, который контролирует учетные данные. 
         /// </summary>
         private readonly string securityPackage;
-        
+
         /// <summary>
-        /// Whether the Credential has been disposed.
+        /// Были ли удалены учетные данные. 
         /// </summary>
         private bool disposed;
 
         /// <summary>
-        /// A safe handle to the credential's handle.
+        /// Безопасный дескриптор учетных данных. 
         /// </summary>
         private SafeCredentialHandle safeCredHandle;
 
         /// <summary>
-        /// The UTC time the credentials expire.
+        /// Время в формате UTC когда истекает срок действия учетных данных. 
         /// </summary>
         private DateTime expiry;
 
         /// <summary>
-        /// Initializes a new instance of the Credential class.
+        /// Инициализирует новый экземпляр класса Credential. 
         /// </summary>
-        /// <param name="package">The security package to acquire the credential from.</param>
+        /// <param name="package">Пакет безопасности, из которого нужно получить учетные данные. </param>
         public Credential( string package )
         {
             this.securityPackage = package;
@@ -43,12 +43,12 @@ namespace NSspi.Credentials
         }
 
         /// <summary>
-        /// Gets metadata for the security package associated with the credential.
+        /// Получает метаданные для пакета безопасности, связанного с учетными данными. 
         /// </summary>
         public SecPkgInfo PackageInfo { get; private set; }
 
         /// <summary>
-        /// Gets the name of the security package that owns the credential.
+        /// Получает имя пакета безопасности, которому принадлежат учетные данные. 
         /// </summary>
         public string SecurityPackage
         {
@@ -61,9 +61,9 @@ namespace NSspi.Credentials
         }
 
         /// <summary>
-        /// Returns the User Principle Name of the credential. Depending on the underlying security
-        /// package used by the credential, this may not be the same as the Down-Level Logon Name
-        /// for the user.
+        /// Возвращает имя принципа пользователя для учетных данных. В зависимости от базовой безопасности
+        /// пакет, используемый учетными данными, он может не совпадать с именем входа нижнего уровня
+        /// для пользователя. 
         /// </summary>
         public string PrincipleName
         {
@@ -129,7 +129,7 @@ namespace NSspi.Credentials
         }
 
         /// <summary>
-        /// Gets the UTC time the credentials expire.
+        /// Получает время в формате UTC, когда истекает срок действия учетных данных. 
         /// </summary>
         public DateTime Expiry
         {
@@ -169,7 +169,7 @@ namespace NSspi.Credentials
         }
 
         /// <summary>
-        /// Releases all resources associated with the credential.
+        /// Освобождает все ресурсы, связанные с учетными данными. 
         /// </summary>
         public void Dispose()
         {
@@ -178,7 +178,7 @@ namespace NSspi.Credentials
         }
 
         /// <summary>
-        /// Releases all resources associted with the credential.
+        /// Освобождает все ресурсы, связанные с учетными данными. 
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose( bool disposing )

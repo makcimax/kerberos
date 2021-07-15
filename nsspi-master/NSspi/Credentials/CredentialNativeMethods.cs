@@ -42,9 +42,9 @@ namespace NSspi.Credentials
         );
 
         /// <summary>
-        /// The overload of the QueryCredentialsAttribute method that is used for querying the name attribute.
-        /// In this call, it takes a void* to a structure that contains a wide char pointer. The wide character
-        /// pointer is allocated by the SSPI api, and thus needs to be released by a call to FreeContextBuffer().
+        /// Перегрузка метода QueryCredentialsAttribute, который используется для запроса атрибута имени.
+        /// В этом вызове он принимает void * в структуру, содержащую широкий указатель на char. Широкий характер
+        /// указатель выделяется API SSPI и, следовательно, должен быть освобожден вызовом FreeContextBuffer (). 
         /// </summary>
         /// <param name="credentialHandle"></param>
         /// <param name="attributeName"></param>

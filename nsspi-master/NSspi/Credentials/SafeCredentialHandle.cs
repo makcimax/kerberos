@@ -4,19 +4,19 @@ using System.Runtime.ConstrainedExecution;
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Provides a managed handle to an SSPI credential.
+    /// Предоставляет управляемый дескриптор учетных данных SSPI. 
     /// </summary>
     public class SafeCredentialHandle : SafeSspiHandle
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SafeCredentialHandle"/> class.
+        /// Инициализирует новый экземпляр  <see cref="SafeCredentialHandle"/> класса.
         /// </summary>
         public SafeCredentialHandle()
             : base()
         { }
 
         /// <summary>
-        /// Releases the resources held by the credential handle.
+        /// Освобождает ресурсы, удерживаемые дескриптором учетных данных. 
         /// </summary>
         /// <returns></returns>
         [ReliabilityContract( Consistency.WillNotCorruptState, Cer.Success )]

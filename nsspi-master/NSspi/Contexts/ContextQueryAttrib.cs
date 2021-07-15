@@ -3,44 +3,44 @@
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Defines the types of queries that can be performed with QueryContextAttribute.
-    /// Each query has a different result buffer.
+    /// Определяет типы запросов, которые могут выполняться с QueryContextAttribute.
+    /// Каждый запрос имеет свой буфер результатов. 
     /// </summary>
     internal enum ContextQueryAttrib : int
     {
         /// <summary>
-        /// Queries the buffer size parameters when performing message functions, such
-        /// as encryption, decryption, signing and signature validation.
+        /// Запрашивает параметры размера буфера при выполнении функций сообщений, таких как
+        /// как шифрование, дешифрование, подпись и проверка подписи. 
         /// </summary>
         /// <remarks>
-        /// Results for a query of this type are stored in a Win32 SecPkgContext_Sizes structure.
+        /// Результаты запроса этого типа хранятся в структуре Win32 SecPkgContext_Sizes. 
         /// </remarks>
         Sizes = 0,
 
         /// <summary>
-        /// Queries the context for the name of the user assocated with a security context.
+        /// Запрашивает в контексте имя пользователя, связанного с контекстом безопасности. 
         /// </summary>
         /// <remarks>
-        /// Results for a query of this type are stored in a Win32 SecPkgContext_Name structure.
+        /// Результаты запроса этого типа хранятся в структуре Win32 SecPkgContext_Name. 
         /// </remarks>
         Names = 1,
 
         /// <summary>
-        /// Queries the name of the authenticating authority for the security context.
+        /// Запрашивает имя аутентифицирующего органа для контекста безопасности. 
         /// </summary>
         /// <remarks>
-        /// Results for a query of this type are stored in a Win32 SecPkgContext_Authority structure.
+        /// Результаты запроса этого типа хранятся в структуре Win32 SecPkgContext_Authority. 
         /// </remarks>
         Authority = 6,
 
         /// <summary>
-        /// Queries the context for it's neogtiated SessionKey
+        /// Запрашивает контекст для нового ключа SessionKey 
         /// </summary>
         /// <remarks>
-        /// Results for a query of this type are stored in a Win32 SecPkgContext_SessionKey structure
+        /// Результаты запроса этого типа хранятся в структуре Win32 SecPkgContext_SessionKey. 
         /// </remarks>
         SessionKey = 9,
 
-        AccessToken = 13, //not implemented yet but this would be cool
+        AccessToken = 13, //не реализовано
     }
 }

@@ -5,13 +5,14 @@ using NSspi.Credentials;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Represents a client security context. Provides the means to establish a shared security context
-    /// with the server and to encrypt, decrypt, sign and verify messages to and from the server.
+    /// Предоставляет средства для создания общего контекста безопасности
+    /// с сервером, а также для шифрования, дешифрования, подписи и проверки сообщений, 
+    /// отправляемых и исходящих от сервера. 
     /// </summary>
     /// <remarks>
-    /// A client and server establish a shared security context by exchanging authentication tokens. Once
-    /// the shared context is established, the client and server can pass messages to each other, encrypted,
-    /// signed, etc, using the established parameters of the shared context.
+    // Клиент и сервер устанавливают общий контекст безопасности, обмениваясь токенами аутентификации. Если один раз
+    /// общий контекст установлен, клиент и сервер могут передавать друг другу сообщения в зашифрованном виде,
+    /// подписанные с использованием установленных параметров общего контекста. 
     /// </remarks>
     public class ClientContext : Context
     {
@@ -20,14 +21,14 @@ namespace NSspi.Contexts
         private string serverPrinc;
 
         /// <summary>
-        /// Initializes a new instance of the ClientContext class. The context is not fully initialized and usable
-        /// until the authentication cycle has been completed.
+        /// Инициализирует новый экземпляр класса ClientContext. Контекст не полностью инициализирован и 
+        /// пригоден для использования до завершения цикла аутентификации. 
         /// </summary>
-        /// <param name="cred">The security credential to authenticate as.</param>
-        /// <param name="serverPrinc">The principle name of the server to connect to, or null for any.</param>
-        /// <param name="requestedAttribs">Requested attributes that describe the desired properties of the
-        /// context once it is established. If a context cannot be established that satisfies the indicated
-        /// properties, the context initialization is aborted.</param>
+        /// <param name="cred">Учетные данные безопасности для аутентификации</param>
+        /// <param name="serverPrinc">Основное имя сервера для подключения или null для любого</param>
+        /// <param name="requestedAttribs">Запрошенные атрибуты, описывающие желаемые свойства
+        /// контекста, как только он будет установлен. Если не удается установить контекст, удовлетворяющий указанным
+        /// свойства, инициализация контекста прерывается </param>
         public ClientContext( Credential cred, string serverPrinc, ContextAttrib requestedAttribs )
             : base( cred )
         {
@@ -36,27 +37,27 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Performs and continues the authentication cycle.
+        /// Выполняет и продолжает цикл аутентификации. 
         /// </summary>
         /// <remarks>
-        /// This method is performed iteratively to start, continue, and end the authentication cycle with the
-        /// server. Each stage works by acquiring a token from one side, presenting it to the other side
-        /// which in turn may generate a new token.
+        /// Этот метод выполняется итеративно для запуска, продолжения и завершения цикла аутентификации с помощью
+        /// сервера. Каждый этап работает путем получения токена с одной стороны и передачи его другой стороне.
+        /// который, в свою очередь, может генерировать новый токен. 
         ///
-        /// The cycle typically starts and ends with the client. On the first invocation on the client,
-        /// no server token exists, and null is provided in its place. The client returns its status, providing
-        /// its output token for the server. The server accepts the clients token as input and provides a
-        /// token as output to send back to the client. This cycle continues until the server and client
-        /// both indicate, typically, a SecurityStatus of 'OK'.
+        /// Цикл обычно начинается и заканчивается клиентом. При первом вызове на клиенте
+        /// токена сервера не существует, вместо него предоставляется null. Клиент возвращает свой статус, предоставляя
+        /// его выходной токен для сервера. Сервер принимает токен клиентов в качестве входных данных и предоставляет
+        /// токен в качестве вывода для отправки обратно клиенту. Этот цикл продолжается до тех пор, пока сервер и клиент
+        /// оба обычно указывают SecurityStatus «ОК». 
         /// </remarks>
-        /// <param name="serverToken">The most recently received token from the server, or null if beginning
-        /// the authentication cycle.</param>
-        /// <param name="outToken">The clients next authentication token in the authentication cycle.</param>
-        /// <returns>A status message indicating the progression of the authentication cycle.
-        /// A status of 'OK' indicates that the cycle is complete, from the client's perspective. If the outToken
-        /// is not null, it must be sent to the server.
-        /// A status of 'Continue' indicates that the output token should be sent to the server and
-        /// a response should be anticipated.</returns>
+        /// <param name="serverToken">Последний токен, полученный с сервера, или null, если начинается
+        /// цикл аутентификации. </param>
+        /// <param name="outToken">Следующий токен аутентификации клиентов в цикле аутентификации</param>
+        /// <returns>Сообщение о состоянии, указывающее на прогресс цикла аутентификации.
+        /// Статус «ОК» указывает, что цикл завершен с точки зрения клиента. Если outToken
+        /// не равно нулю, он должен быть отправлен на сервер.
+        /// Статус «Продолжить» указывает, что выходной токен должен быть отправлен на сервер и
+        /// следует ожидать ответа. </returns>
         public SecurityStatus Init( byte[] serverToken, out byte[] outToken )
         {
             TimeStamp rawExpiry = new TimeStamp();
@@ -82,8 +83,9 @@ namespace NSspi.Contexts
                 throw new InvalidOperationException( "Must provide the server's response when continuing the init process." );
             }
 
-            // The security package tells us how big its biggest token will be. We'll allocate a buffer
-            // that size, and it'll tell us how much it used.
+            // Пакет безопасности сообщает нам, насколько большим будет его
+            // самый большой токен. Мы выделим буфер
+            // такого размера, и это скажет нам, сколько он был использован.
             outTokenBuffer = new SecureBuffer(
                 new byte[this.Credential.PackageInfo.MaxTokenLength],
                 BufferType.Token
@@ -95,22 +97,22 @@ namespace NSspi.Contexts
                 serverBuffer = new SecureBuffer( serverToken, BufferType.Token );
             }
 
-            // Some notes on handles and invoking InitializeSecurityContext
-            //  - The first time around, the phContext parameter (the 'old' handle) is a null pointer to what
-            //    would be an RawSspiHandle, to indicate this is the first time it's being called.
-            //    The phNewContext is a pointer (reference) to an RawSspiHandle struct of where to write the
-            //    new handle's values.
-            //  - The next time you invoke ISC, it takes a pointer to the handle it gave you last time in phContext,
-            //    and takes a pointer to where it should write the new handle's values in phNewContext.
-            //  - After the first time, you can provide the same handle to both parameters. From MSDN:
-            //       "On the second call, phNewContext can be the same as the handle specified in the phContext
-            //        parameter."
-            //    It will overwrite the handle you gave it with the new handle value.
-            //  - All handle structures themselves are actually *two* pointer variables, eg, 64 bits on 32-bit
-            //    Windows, 128 bits on 64-bit Windows.
-            //  - So in the end, on a 64-bit machine, we're passing a 64-bit value (the pointer to the struct) that
-            //    points to 128 bits of memory (the struct itself) for where to write the handle numbers.
-            using( outAdapter = new SecureBufferAdapter( outTokenBuffer ) )
+            //Некоторые примечания по дескрипторам и вызову InitializeSecurityContext
+            // - В первый раз параметр phContext («старый» дескриптор) является нулевым указателем на то, что
+            // будет RawSspiHandle, чтобы указать, что это первый вызов.
+            // phNewContext - это указатель (ссылка) на структуру RawSspiHandle, где записывать
+            // новые значения дескриптора.
+            // - В следующий раз, когда вы вызовете ISC, он получит указатель на дескриптор, который он дал вам в последний раз в phContext,
+            // и принимает указатель на то, куда следует записывать значения нового дескриптора в phNewContext.
+            // - После первого раза вы можете указать один и тот же дескриптор для обоих параметров. Из MSDN:
+            // "При втором вызове phNewContext может быть таким же, как дескриптор, указанный в phContext
+            // параметр. "
+            // Он перезапишет переданный вами дескриптор новым значением дескриптора.
+            // - Все структуры дескрипторов на самом деле являются * двумя * переменными-указателями, например, 64-битные на 32-битных
+            // Windows, 128 бит в 64-битной Windows.
+            // - Итак, в конце на 64-битной машине мы передаем 64-битное значение (указатель на структуру), которое
+            // указывает на 128 бит памяти (саму структуру) для записи номеров дескрипторов. 
+            using ( outAdapter = new SecureBufferAdapter( outTokenBuffer ) )
             {
                 if( this.ContextHandle.IsInvalid )
                 {

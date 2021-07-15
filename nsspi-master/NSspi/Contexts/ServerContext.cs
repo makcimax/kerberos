@@ -8,7 +8,7 @@ using NSspi.Credentials;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Represents a security context used in a server role.
+    /// Представляет контекст безопасности, используемый в роли сервера. 
     /// </summary>
     public class ServerContext : Context
     {
@@ -19,14 +19,14 @@ namespace NSspi.Contexts
         private bool impersonating;
 
         /// <summary>
-        /// Performs basic initialization of a new instance of the ServerContext class. The
-        /// ServerContext is not ready for message manipulation until a security context has been
-        /// established with a client.
+        /// Выполняет базовую инициализацию нового экземпляра класса ServerContext. В
+        /// ServerContext не готов для обработки сообщений до тех пор, пока не будет создан контекст безопасности
+        /// установлено с клиентом. 
         /// </summary>
         /// <param name="cred"></param>
         /// <param name="requestedAttribs"></param>
         /// <param name="impersonationSetsThreadPrinciple">
-        /// If true, the `Thread.CurrentPrinciple` property will be modified by successful impersonation.
+        /// Если true, свойство Thread.CurrentPrinciple будет изменено при успешном олицетворении. 
         /// </param>
         public ServerContext( Credential cred, ContextAttrib requestedAttribs, bool impersonationSetsThreadPrinciple = false ) : base( cred )
         {
@@ -41,35 +41,35 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Whether or not the server can impersonate an authenticated client.
+        /// Может ли сервер олицетворять аутентифицированного клиента. 
         /// </summary>
         /// <remarks>
-        /// This depends on the security package that was used to create the server and client's credentials.
+        /// Это зависит от пакета безопасности, который использовался для создания учетных данных сервера и клиента. 
         /// </remarks>
         public bool SupportsImpersonate { get; private set; }
 
         /// <summary>
-        /// Performs and continues the authentication cycle.
+        /// Выполняет и продолжает цикл аутентификации. 
         /// </summary>
         /// <remarks>
-        /// This method is performed iteratively to continue and end the authentication cycle with the
-        /// client. Each stage works by acquiring a token from one side, presenting it to the other side
-        /// which in turn may generate a new token.
+        /// Этот метод выполняется итеративно, чтобы продолжить и завершить цикл аутентификации с помощью
+        /// клиента. Каждый этап работает путем получения токена с одной стороны и передачи его другой стороне.
+        /// который, в свою очередь, может генерировать новый токен. 
         ///
-        /// The cycle typically starts and ends with the client. On the first invocation on the client,
-        /// no server token exists, and null is provided in its place. The client returns its status, providing
-        /// its output token for the server. The server accepts the clients token as input and provides a
-        /// token as output to send back to the client. This cycle continues until the server and client
-        /// both indicate, typically, a SecurityStatus of 'OK'.
+        /// Цикл обычно начинается и заканчивается клиентом. При первом вызове на клиенте
+        /// токена сервера не существует, вместо него предоставляется null. Клиент возвращает свой статус, предоставляя
+        /// его выходной токен для сервера. Сервер принимает токен клиентов в качестве входных данных и предоставляет
+        /// токен в качестве вывода для отправки обратно клиенту. Этот цикл продолжается до тех пор, пока сервер и клиент
+        /// оба обычно указывают SecurityStatus «ОК». 
         /// </remarks>
-        /// <param name="clientToken">The most recently received token from the client.</param>
-        /// <param name="nextToken">The servers next authentication token in the cycle, that must
-        /// be sent to the client.</param>
-        /// <returns>A status message indicating the progression of the authentication cycle.
-        /// A status of 'OK' indicates that the cycle is complete, from the servers's perspective. If the nextToken
-        /// is not null, it must be sent to the client.
-        /// A status of 'Continue' indicates that the output token should be sent to the client and
-        /// a response should be anticipated.</returns>
+        /// <param name="clientToken">Последний токен, полученный от клиента. </param>
+        /// <param name="nextToken">Следующий токен аутентификации сервера в цикле, который должен
+        /// быть отправленным клиенту. </param>
+        /// <returns>Сообщение о состоянии, указывающее на прогресс цикла аутентификации.
+        /// Состояние «ОК» указывает, что цикл завершен с точки зрения серверов. Если nextToken
+        /// не равно нулю, он должен быть отправлен клиенту.
+        /// Статус «Продолжить» указывает, что выходной токен должен быть отправлен клиенту и
+        /// следует ожидать ответа. </returns>
         public SecurityStatus AcceptToken( byte[] clientToken, out byte[] nextToken )
         {
             SecureBuffer clientBuffer;
@@ -162,18 +162,18 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Changes the current thread's security context to impersonate the user of the client.
+        /// Изменяет контекст безопасности текущего потока, чтобы олицетворять пользователя клиента. 
         /// </summary>
         /// <remarks>
-        /// Requires that the security package provided with the server's credentials, as well as the
-        /// client's credentials, support impersonation.
+        /// Требуется, чтобы пакет безопасности предоставлял учетные данные сервера, а также
+        /// учетные данные клиента, поддержка олицетворения. 
         ///
-        /// Currently, only one thread may initiate impersonation per security context. Impersonation may
-        /// follow threads created by the initial impersonation thread, however.
+        /// В настоящее время только один поток может инициировать олицетворение для каждого контекста безопасности. Выдача себя за другое лицо может
+        /// следим за потоками, созданными начальным потоком олицетворения. 
         /// </remarks>
-        /// <returns>A handle to capture the lifetime of the impersonation. Dispose the handle to revert
-        /// impersonation. If the handle is leaked, the impersonation will automatically revert at a
-        /// non-deterministic time when the handle is finalized by the Garbage Collector.</returns>
+        /// <returns>Дескриптор, фиксирующий время жизни олицетворения. Утилизируйте ручку, чтобы продолжить выдавать
+        /// себя за другое лицо. Если дескриптор просочился, олицетворение автоматически вернется в
+        /// недетерминированное время, когда дескриптор завершается сборщиком мусора. </returns>
         public ImpersonationHandle ImpersonateClient()
         {
             ImpersonationHandle handle;
@@ -253,7 +253,7 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Called by the ImpersonationHandle when it is released, either by disposale or finalization.
+        /// Вызывается дескриптором олицетворения, когда он выпускается, путем удаления или завершения. 
         /// </summary>
         internal void RevertImpersonate()
         {
@@ -295,20 +295,20 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Releases all resources associted with the ServerContext.
+        /// Освобождает все ресурсы, связанные с серверным контекстом. 
         /// </summary>
         /// <param name="disposing"></param>
         protected override void Dispose( bool disposing )
         {
-            // We were disposed while impersonating. This means that the consumer that is currently holding
-            // the impersonation handle allowed the context to be disposed or finalized while an impersonation handle
-            // was held. We have to revert impersonation to restore the thread's behavior, since once the context
-            // goes away, there's nothing left.
+            // Мы были настроены, выдавая себя за другое лицо. Это означает, что потребитель, который в настоящее время держит
+            // дескриптор олицетворения позволяет удалить или завершить контекст, пока дескриптор олицетворения установлен
+            // Мы должны отменить олицетворение, чтобы восстановить поведение потока, поскольку однажды контекст
+            // ичезнет и ничего не останется.
             //
-            // When and if the impersonation handle is diposed/finalized, it'll see that the context has already been
-            // disposed, will assume that we already reverted, and so will do nothing.
+            // Когда и если дескриптор олицетворения будет отключен / завершен, он увидит, что контекст уже был
+            // disposed, будет считать, что мы уже вернулись, и ничего не будет делать. 
 
-            if( this.impersonating )
+            if ( this.impersonating )
             {
                 RevertImpersonate();
             }

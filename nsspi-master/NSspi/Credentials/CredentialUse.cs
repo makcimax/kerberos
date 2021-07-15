@@ -3,25 +3,25 @@
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Indicates the manner in which a credential will be used for SSPI authentication.
+    /// Указывает способ, которым учетные данные будут использоваться для аутентификации SSPI.
     /// </summary>
     public enum CredentialUse : uint
     {
         /// <summary>
-        /// The credentials will be used for establishing a security context with an inbound request, eg,
-        /// the credentials will be used by a server building a security context with a client.
+        /// Учетные данные будут использоваться для установления контекста безопасности с входящим запросом, например,
+        /// учетные данные будут использоваться сервером, создающим контекст безопасности с клиентом.
         /// </summary>
         Inbound = 1,
 
         /// <summary>
-        /// The credentials will be used for establishing a security context as an outbound request,
-        /// eg, the credentials will be used by a client to build a security context with a server.
+        /// Учетные данные будут использоваться для установления контекста безопасности в качестве исходящего запроса,
+        /// например, учетные данные будут использоваться клиентом для создания контекста безопасности с сервером.
         /// </summary>
         Outbound = 2,
 
         /// <summary>
-        /// The credentials may be used to to either build a client's security context or a server's
-        /// security context.
+        /// Учетные данные могут использоваться для создания контекста безопасности клиента или сервера.
+        /// контекст безопасности.
         /// </summary>
         Both = 3,
     }

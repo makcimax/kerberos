@@ -7,7 +7,7 @@ using NSspi.Buffers;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Declares native methods calls for security context-related win32 functions.
+    /// Объявляет вызовы собственных методов для функций win32, связанных с безопасностью. 
     /// </summary>
     internal static class ContextNativeMethods
     {
@@ -196,9 +196,9 @@ namespace NSspi.Contexts
             SecurityStatus status = SecurityStatus.InternalError;
             RuntimeHelpers.PrepareConstrainedRegions();
 
-            int pointerSize = System.Environment.Is64BitOperatingSystem ? 8 : 4; //NOTE: update this when 128 bit processors exist
-            IntPtr alloc_buffer = Marshal.AllocHGlobal( sizeof( uint ) + pointerSize ); //NOTE: this is at most 4 + sizeof(void*) bytes
-                                                                                        //see struct SecPkgContext_SessionKey
+            int pointerSize = System.Environment.Is64BitOperatingSystem ? 8 : 4; //NOTE:обновите это, когда существуют 128-битные процессоры  
+            IntPtr alloc_buffer = Marshal.AllocHGlobal( sizeof( uint ) + pointerSize ); //NOTE: это не более 4 + sizeof (void *) байт 
+                                                                                        //см. struct SecPkgContext_SessionKey 
                                                                                         // https://msdn.microsoft.com/en-us/library/windows/desktop/aa380096(v=vs.85).aspx
             try
             {
@@ -228,7 +228,7 @@ namespace NSspi.Contexts
                     {
                         KeyStruct key = new KeyStruct();
 
-                        Marshal.PtrToStructure( alloc_buffer, key ); // fit to the proper size, read a byte[]
+                        Marshal.PtrToStructure( alloc_buffer, key ); // подходящего размера [] 
 
                         byte[] sizedBuffer = new byte[key.size];
 
@@ -245,8 +245,8 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Safely invokes the native EncryptMessage function, making sure that handle ref counting is
-        /// performed in a proper CER.
+        /// Безопасно вызывает встроенную функцию EncryptMessage, убедившись, что счетчик ссылок дескриптора
+        /// выполняется в надлежащем CER. 
         /// </summary>
         /// <param name="handle"></param>
         /// <param name="qualityOfProtection"></param>
@@ -296,8 +296,8 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Safely invokes the native DecryptMessage function, making sure that handle ref counting is
-        /// performed in a proper CER.
+        /// Безопасно вызывает собственную функцию DecryptMessage, убедившись, что счетчик ссылок дескриптора
+        /// выполняется в надлежащем CER. 
         /// </summary>
         /// <param name="handle"></param>
         /// <param name="qualityOfProtection"></param>
@@ -347,8 +347,8 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Safely invokes the native MakeSignature function, making sure that handle ref counting is
-        /// performed in a proper CER.
+        /// Безопасно вызывает встроенную функцию MakeSignature, убедившись, что счетчик ссылок дескриптора
+        /// выполняется в надлежащем CER. 
         /// </summary>
         /// <param name="handle"></param>
         /// <param name="qualityOfProtection"></param>
@@ -398,8 +398,8 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Safely invokes the native VerifySignature function, making sure that handle ref counting is
-        /// performed in a proper CER.
+        /// Безопасно вызывает встроенную функцию VerifySignature, проверяя, что счетчик ссылок дескриптора
+        /// выполняется в надлежащем CER. 
         /// </summary>
         /// <param name="handle"></param>
         /// <param name="qualityOfProtection"></param>

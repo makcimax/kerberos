@@ -7,24 +7,24 @@ using System.Text;
 namespace NSspi.Credentials
 {
     /// <summary>
-    /// Represents credentials acquired by providing a username, password, and domain.
+    /// Представляет учетные данные, полученные путем предоставления имени пользователя, пароля и домена. 
     /// </summary>
     public class PasswordCredential : Credential
     {
         /// <summary>
-        /// Initializes a new instance of the PasswordCredential class.
+        /// Инициализирует новый экземпляр класса PasswordCredential. 
         /// </summary>
         /// <remarks>
-        /// It is possible to acquire a valid handle to credentials that do not provide a valid
-        /// username-password combination. The username and password are not validation until the
-        /// authentication cycle begins.
+        /// Можно получить действительный дескриптор учетных данных, которые не обеспечивают действительный
+        /// комбинация имени пользователя и пароля. Имя пользователя и пароль не проверяются до тех пор, пока
+        /// цикл аутентификации не начинается. 
         /// </remarks>
-        /// <param name="domain">The domain to authenticate to.</param>
-        /// <param name="username">The username of the user to authenticate as.</param>
-        /// <param name="password">The user's password.</param>
-        /// <param name="secPackage">The SSPI security package to create credentials for.</param>
+        /// <param name="domain">Домен для аутентификации. </param>
+        /// <param name="username">Имя пользователя для аутентификации. </param>
+        /// <param name="password">Пароль пользователя. </param>
+        /// <param name="secPackage">Пакет безопасности SSPI, для которого нужно создать учетные данные. </param>
         /// <param name="use">
-        /// Specify inbound when acquiring credentials for a server; outbound for a client.
+        /// Укажите входящий при получении учетных данных для сервера; исходящий для клиента. 
         /// </param>
         public PasswordCredential( string domain, string username, string password, string secPackage, CredentialUse use ) 
             : base( secPackage )
@@ -40,16 +40,15 @@ namespace NSspi.Credentials
             TimeStamp rawExpiry = new TimeStamp();
             SecurityStatus status = SecurityStatus.InternalError;
 
-            // -- Package --
-            // Copy off for the call, since this.SecurityPackage is a property.
+            // Скопируйте вызов, поскольку this.SecurityPackage является свойством. 
             packageName = this.SecurityPackage;
 
             this.Handle = new SafeCredentialHandle();
 
 
-            // The finally clause is the actual constrained region. The VM pre-allocates any stack space,
-            // performs any allocations it needs to prepare methods for execution, and postpones any
-            // instances of the 'uncatchable' exceptions (ThreadAbort, StackOverflow, OutOfMemory).
+            // Предложение finally - это фактическая ограниченная область. ВМ предварительно выделяет любое пространство стека,
+            // выполняет любые выделения, необходимые для подготовки методов к выполнению, и откладывает любые
+            // экземпляры «неуловимых» исключений (ThreadAbort, StackOverflow, OutOfMemory). 
             RuntimeHelpers.PrepareConstrainedRegions();
             try { }
             finally

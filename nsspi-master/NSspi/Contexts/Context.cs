@@ -8,20 +8,20 @@ using NSspi.Credentials;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Represents a security context and provides common functionality required for all security
-    /// contexts.
+    /// Представляет контекст безопасности и предоставляет общие функции, необходимые для 
+    /// всех систем безопасности.
     /// </summary>
     /// <remarks>
-    /// This class is abstract and has a protected constructor and Initialize method. The exact
-    /// initialization implementation is provided by a subclasses, which may perform initialization
-    /// in a variety of manners.
+    /// Этот класс является абстрактным и имеет защищенный конструктор и метод Initialize. Точная
+    /// реализация инициализации предоставляется подклассами, которые могут выполнять инициализацию
+    /// разными способами. 
     /// </remarks>
     public abstract class Context : IDisposable
     {
         /// <summary>
-        /// Performs basic initialization of a new instance of the Context class.
-        /// Initialization is not complete until the ContextHandle property has been set
-        /// and the Initialize method has been called.
+        /// Выполняет базовую инициализацию нового экземпляра класса Context.
+        /// Инициализация не завершена, пока не будет установлено свойство ContextHandle
+        /// и вызван метод Initialize.
         /// </summary>
         /// <param name="cred"></param>
         protected Context( Credential cred )
@@ -35,22 +35,22 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Whether or not the context is fully formed.
+        /// Независимо от того, сформирован ли контекст полностью. 
         /// </summary>
         public bool Initialized { get; private set; }
 
         /// <summary>
-        /// The credential being used by the context to authenticate itself to other actors.
+        /// Учетные данные, используемые контекстом для аутентификации других участников. 
         /// </summary>
         protected Credential Credential { get; private set; }
 
         /// <summary>
-        /// A reference to the security context's handle.
+        /// Ссылка на дескриптор контекста безопасности.
         /// </summary>
         public SafeContextHandle ContextHandle { get; private set; }
 
         /// <summary>
-        /// The name of the authenticating authority for the context.
+        /// Имя аутентифицирующего органа для контекста.
         /// </summary>
         public string AuthorityName
         {
@@ -62,7 +62,7 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// The logon username that the context represents.
+        /// Имя пользователя для входа в систему, которое представляет контекст.
         /// </summary>
         public string ContextUserName
         {
@@ -74,19 +74,19 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// The UTC time when the context expires.
+        /// Время в формате UTC, когда истекает срок действия контекста. 
         /// </summary>
         public DateTime Expiry { get; private set; }
 
         /// <summary>
-        /// Whether the context has been disposed.
+        /// Был ли удален контекст. 
         /// </summary>
         public bool Disposed { get; private set; }
 
         /// <summary>
-        /// Marks the context as having completed the initialization process, ie, exchanging of authentication tokens.
+        /// Отмечает контекст как завершивший процесс инициализации, т. е. обмен токенами аутентификации. 
         /// </summary>
-        /// <param name="expiry">The date and time that the context will expire.</param>
+        /// <param name="expiry">Дата и время истечения срока действия контекста.</param>
         protected void Initialize( DateTime expiry )
         {
             this.Expiry = expiry;
@@ -94,7 +94,7 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Releases all resources associated with the context.
+        /// Освобождает все ресурсы, связанные с контекстом.
         /// </summary>
         public void Dispose()
         {
@@ -103,9 +103,10 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Releases resources associated with the context.
+        /// Освобождает ресурсы, связанные с контекстом. 
         /// </summary>
-        /// <param name="disposing">If true, release managed resources, else release only unmanaged resources.</param>
+        /// <param name="disposing">Если true, освободит управляемые ресурсы, 
+        /// иначе освободит только неуправляемые ресурсы. </param>
         protected virtual void Dispose( bool disposing )
         {
             if( this.Disposed ) { return; }
@@ -119,7 +120,7 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Returns the identity of the remote entity.
+        /// Возвращает идентификатор удаленного объекта. 
         /// </summary>
         /// <returns></returns>
         public IIdentity GetRemoteIdentity()
@@ -156,8 +157,8 @@ namespace NSspi.Contexts
                     }
                     finally
                     {
-                        // Make sure we release the handle, even if the allocation for
-                        // WindowsIdentity fails.
+                        // Убедимся, что освободили дескриптор, иначе
+                        // ошибка WindowsIdentity. 
                         tokenHandle.DangerousRelease();
                     }
                 }
@@ -218,22 +219,22 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Encrypts the byte array using the context's session key.
+        /// Шифрует массив байтов, используя ключ сеанса контекста. 
         /// </summary>
         /// <remarks>
-        /// The structure of the returned data is as follows:
-        ///  - 2 bytes, an unsigned big-endian integer indicating the length of the trailer buffer size
-        ///  - 4 bytes, an unsigned big-endian integer indicating the length of the message buffer size.
-        ///  - 2 bytes, an unsigned big-endian integer indicating the length of the encryption padding buffer size.
-        ///  - The trailer buffer
-        ///  - The message buffer
-        ///  - The padding buffer.
+        /// Структура возвращаемых данных следующая:
+        /// - 2 байта, беззнаковое целое число с прямым порядком байтов, указывающее длину размера конечного буфера
+        /// - 4 байта, целое число без знака с прямым порядком байтов, указывающее длину размера буфера сообщения.
+        /// - 2 байта, беззнаковое целое число с прямым порядком байтов, указывающее длину размера буфера заполнения для шифрования.
+        /// - Буфер трейлера
+        /// - Буфер сообщений
+        /// - Буфер заполнения. 
         /// </remarks>
-        /// <param name="input">The raw message to encrypt.</param>
-        /// <returns>The packed and encrypted message.</returns>
+        /// <param name="input">Необработанное сообщение для шифрования. </param>
+        /// <returns>Упакованное и зашифрованное сообщение. </returns>
         public byte[] Encrypt( byte[] input )
         {
-            // The message is encrypted in place in the buffer we provide to Win32 EncryptMessage
+            //Сообщение зашифровано в буфере, который мы предоставляем Win32 EncryptMessage.  
             SecPkgContext_Sizes sizes;
 
             SecureBuffer trailerBuffer;
@@ -271,11 +272,11 @@ namespace NSspi.Contexts
 
             int position = 0;
 
-            // Enough room to fit:
-            //  -- 2 bytes for the trailer buffer size
-            //  -- 4 bytes for the message size
-            //  -- 2 bytes for the padding size.
-            //  -- The encrypted message
+            // Достаточно места для размещения:
+            // - 2 байта для размера буфера трейлера
+            // - 4 байта для размера сообщения
+            // - 2 байта для размера заполнения.
+            // - зашифрованное сообщение
             result = new byte[2 + 4 + 2 + trailerBuffer.Length + dataBuffer.Length + paddingBuffer.Length];
 
             ByteWriter.WriteInt16_BE( (short)trailerBuffer.Length, result, position );
@@ -300,19 +301,19 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Decrypts a previously encrypted message.
+        /// Расшифровывает ранее зашифрованное сообщение. 
         /// </summary>
         /// <remarks>
-        /// The expected format of the buffer is as follows:
-        ///  - 2 bytes, an unsigned big-endian integer indicating the length of the trailer buffer size
-        ///  - 4 bytes, an unsigned big-endian integer indicating the length of the message buffer size.
-        ///  - 2 bytes, an unsigned big-endian integer indicating the length of the encryption padding buffer size.
-        ///  - The trailer buffer
-        ///  - The message buffer
-        ///  - The padding buffer.
+        /// Ожидаемый формат буфера следующий:
+        /// - 2 байта, беззнаковое целое число с прямым порядком байтов, указывающее длину размера конечного буфера
+        /// - 4 байта, целое число без знака с прямым порядком байтов, указывающее длину размера буфера сообщения.
+        /// - 2 байта, беззнаковое целое число с прямым порядком байтов, указывающее длину размера буфера заполнения для шифрования.
+        /// - Буфер трейлера
+        /// - Буфер сообщений
+        /// - Буфер заполнения. 
         /// </remarks>
-        /// <param name="input">The packed and encrypted data.</param>
-        /// <returns>The original plaintext message.</returns>
+        /// <param name="input">Упакованные и зашифрованные данные. </param>
+        /// <returns>Исходное текстовое сообщение. </returns>
         public byte[] Decrypt( byte[] input )
         {
             SecPkgContext_Sizes sizes;
@@ -335,8 +336,8 @@ namespace NSspi.Contexts
 
             sizes = QueryBufferSizes();
 
-            // This check is required, but not sufficient. We could be stricter.
-            if( input.Length < 2 + 4 + 2 + sizes.SecurityTrailer )
+            // Эта проверка обязательна
+            if ( input.Length < 2 + 4 + 2 + sizes.SecurityTrailer )
             {
                 throw new ArgumentException( "Buffer is too small to possibly contain an encrypted message" );
             }
@@ -389,9 +390,9 @@ namespace NSspi.Contexts
             {
                 Array.Copy( input, position, paddingBuffer.Buffer, 0, paddingBuffer.Length );
             }
-            // else there was no padding.
+            // иначе не было бы отступа.
 
-            using( adapter = new SecureBufferAdapter( new[] { trailerBuffer, dataBuffer, paddingBuffer } ) )
+            using ( adapter = new SecureBufferAdapter( new[] { trailerBuffer, dataBuffer, paddingBuffer } ) )
             {
                 status = ContextNativeMethods.SafeDecryptMessage(
                     this.ContextHandle,
@@ -413,14 +414,13 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Signs the message using the context's session key.
+        /// Подписывает сообщение, используя ключ сеанса контекста. 
         /// </summary>
         /// <remarks>
-        /// The structure of the returned buffer is as follows:
-        ///  - 4 bytes, unsigned big-endian integer indicating the length of the plaintext message
-        ///  - 2 bytes, unsigned big-endian integer indicating the length of the signture
-        ///  - The plaintext message
-        ///  - The message's signature.
+        /// Структура возвращаемого буфера следующая:
+        /// - 4 байта, целое число без знака с прямым порядком байтов, указывающее длину текстового сообщения
+        /// - 2 байта, целое число без знака с прямым порядком байтов, указывающее длину сигнатуры
+        /// - Текстовое сообщение
         /// </remarks>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -460,11 +460,11 @@ namespace NSspi.Contexts
             byte[] outMessage;
             int position = 0;
 
-            // Enough room for
-            //  - original message length (4 bytes)
-            //  - signature length        (2 bytes)
-            //  - original message
-            //  - signature
+            // Достаточно места для
+            // - исходная длина сообщения (4 байта)
+            // - длина подписи (2 байта)
+            //  - Исходное сообщение
+            //  - подпись 
 
             outMessage = new byte[4 + 2 + dataBuffer.Length + signatureBuffer.Length];
 
@@ -484,14 +484,14 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Returns the Session Key from a context or null on failure.
+        /// Возвращает ключ сеанса из контекста или null в случае ошибки. 
         /// </summary>
         /// <remarks>
-        /// Session keys are sometimes needed for other purposes or HMAC functions. This function
-        /// will run QueryAttribute to get the session key struct, and read and return the key from
-        /// that struct.
+        /// Ключи сеанса иногда необходимы для других целей или функций HMAC. Эта функция
+        /// запустит QueryAttribute для получения структуры ключа сеанса, а также прочитает и вернет ключ из
+        /// эта структура. 
         /// </remarks>
-        /// <returns>byte[] with the session key data or null on failure</returns>
+        /// <returns>byte[] с данными сеансового ключа или null в случае сбоя </returns>
         public byte[] QuerySessionKey()
         {
             SecurityStatus status;
@@ -513,18 +513,18 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Verifies the signature of a signed message
+        /// Проверяет подпись подписанного сообщения 
         /// </summary>
         /// <remarks>
-        /// The expected structure of the signed message buffer is as follows:
-        ///  - 4 bytes, unsigned integer in big endian format indicating the length of the plaintext message
-        ///  - 2 bytes, unsigned integer in big endian format indicating the length of the signture
-        ///  - The plaintext message
-        ///  - The message's signature.
+        /// Ожидаемая структура буфера подписанного сообщения следующая:
+        /// - 4 байта, целое число без знака в формате big endian, указывающее длину текстового сообщения
+        /// - 2 байта, целое число без знака в формате big endian, указывающее длину сигнатуры
+        /// - Текстовое сообщение
+        /// - Подпись сообщения. 
         /// </remarks>
-        /// <param name="signedMessage">The packed signed message.</param>
-        /// <param name="origMessage">The extracted original message.</param>
-        /// <returns>True if the message has a valid signature, false otherwise.</returns>
+        /// <param name="signedMessage">Упакованное подписанное сообщение. </param>
+        /// <param name="origMessage">Извлеченное исходное сообщение. </param>
+        /// <returns>Истина, если у сообщения есть действительная подпись, в противном случае - ложь.</returns>
         public bool VerifySignature( byte[] signedMessage, out byte[] origMessage )
         {
             SecurityStatus status = SecurityStatus.InternalError;
@@ -594,7 +594,8 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Queries the security package's expections regarding message/token/signature/padding buffer sizes.
+        /// Запрашивает ожидания пакетов безопасности в отношении 
+        /// размеров буфера сообщений / токенов / подписей / заполнения. 
         /// </summary>
         /// <returns></returns>
         private SecPkgContext_Sizes QueryBufferSizes()
@@ -640,9 +641,9 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Queries a string-valued context attribute by the named attribute.
+        /// Запрашивает строковый атрибут контекста по названному атрибуту.
         /// </summary>
-        /// <param name="attrib">The string-valued attribute to query.</param>
+        /// <param name="attrib">Атрибут со строковым значением для запроса.</param>
         /// <returns></returns>
         private string QueryContextString( ContextQueryAttrib attrib )
         {
@@ -705,8 +706,8 @@ namespace NSspi.Contexts
         }
 
         /// <summary>
-        /// Verifies that the object's lifecycle (initialization / disposition) state is suitable for using the
-        /// object.
+        /// Проверяет, подходит ли состояние жизненного цикла объекта (инициализация / размещение) для использования
+        /// объект. 
         /// </summary>
         private void CheckLifecycle()
         {

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Stores the result of a context query for the context's buffer sizes.
+    /// Сохраняет результат контекстного запроса для размеров контекстного буфера. 
     /// </summary>
     [StructLayout( LayoutKind.Sequential )]
     internal struct SecPkgContext_Sizes
@@ -16,7 +16,7 @@ namespace NSspi.Contexts
     }
 
     /// <summary>
-    /// Stores the result of a context query for a string-valued context attribute.
+    /// Сохраняет результат контекстного запроса для атрибута контекста со строковым значением. 
     /// </summary>
     [StructLayout( LayoutKind.Sequential )]
     internal struct SecPkgContext_String

@@ -4,19 +4,19 @@ using System.Runtime.ConstrainedExecution;
 namespace NSspi.Contexts
 {
     /// <summary>
-    /// Captures an unmanaged security context handle.
+    /// Захватывает дескриптор неуправляемого контекста безопасности. 
     /// </summary>
     public class SafeContextHandle : SafeSspiHandle
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SafeContextHandle"/> class.
+        /// Инициализирует новый экземпляр класса <see cref = "SafeContextHandle" />. 
         /// </summary>
         public SafeContextHandle()
             : base()
         { }
 
         /// <summary>
-        /// Releases the safe context handle.
+        /// Освобождает безопасный дескриптор контекста. 
         /// </summary>
         /// <returns></returns>
         [ReliabilityContract( Consistency.WillNotCorruptState, Cer.Success )]
