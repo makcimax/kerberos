@@ -117,6 +117,7 @@ namespace NSspi
                 {
                 }
 
+                //Пр
                 cipherText = client.MakeSignature( plainText );
 
                 bool goodSig = server.VerifySignature( cipherText, out roundTripPlaintext );

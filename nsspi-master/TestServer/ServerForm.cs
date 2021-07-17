@@ -31,7 +31,7 @@ namespace TestServer
         {
             InitializeComponent();
 
-            this.serverCred = new ServerCurrentCredential( PackageNames.Negotiate );
+            this.serverCred = new ServerCurrentCredential( PackageNames.Kerberos );
 
             this.serverContext = new ServerContext(
                 serverCred,
@@ -53,9 +53,6 @@ namespace TestServer
             this.startButton.Click += startButton_Click;
             this.stopButton.Click += stopButton_Click;
 
-            this.encryptButton.Click += encryptButton_Click;
-            this.signButton.Click += signButton_Click;
-            this.impersonateButton.Click += impersonateButton_Click;
 
             this.running = false;
             this.initializing = false;
@@ -93,30 +90,9 @@ namespace TestServer
             UpdateButtons();
         }
 
-        private void encryptButton_Click( object sender, EventArgs e )
-        {
-            Message message;
 
-            byte[] plainText = Encoding.UTF8.GetBytes( this.sendTextbox.Text );
-            byte[] cipherText = this.serverContext.Encrypt( plainText );
 
-            message = new Message( ProtocolOp.EncryptedMessage, cipherText );
 
-            this.server.Send( message );
-        }
-
-        private void signButton_Click( object sender, EventArgs e )
-        {
-            byte[] plainText = Encoding.UTF8.GetBytes( this.sendTextbox.Text );
-            byte[] signedData;
-            Message message;
-
-            signedData = this.serverContext.MakeSignature( plainText );
-
-            message = new Message( ProtocolOp.SignedMessage, signedData );
-
-            this.server.Send( message );
-        }
 
         private void impersonateButton_Click( object sender, EventArgs e )
         {
@@ -146,9 +122,6 @@ namespace TestServer
         {
             this.startButton.Enabled = this.running == false;
             this.stopButton.Enabled = this.running;
-
-            this.encryptButton.Enabled = this.connected;
-            this.signButton.Enabled = this.connected;
         }
 
         private void server_Received( Message message )
@@ -262,6 +235,11 @@ namespace TestServer
                 byte[] plainText = this.serverContext.Decrypt( message.Data );
                 string text = Encoding.UTF8.GetString( plainText );
 
+                byte[] cipherText = this.serverContext.Encrypt(plainText);
+
+                var echoMessage = new Message(ProtocolOp.EncryptedMessage, cipherText);
+
+                this.server.Send(echoMessage);
                 this.receivedTextbox.Text += "Received encrypted message from client:\r\n" + text + "\r\n";
             } );
         }
@@ -275,7 +253,14 @@ namespace TestServer
                 if( this.serverContext.VerifySignature( message.Data, out plainText ) )
                 {
                     string text = Encoding.UTF8.GetString( plainText );
+                    byte[] signedData;
+                    Message echoMessage;
 
+                    signedData = this.serverContext.MakeSignature(plainText);
+
+                    echoMessage = new Message(ProtocolOp.SignedMessage, signedData);
+
+                    this.server.Send(echoMessage);
                     this.receivedTextbox.Text += "Received valid signed message from client:\r\n" + text + "\r\n";
                 }
                 else
