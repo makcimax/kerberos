@@ -3,18 +3,18 @@
 namespace NSspi.Buffers
 {
     /// <summary>
-    /// Describes how a buffer's opaque internals should be stored, with regards to byte ordering.
+    /// Описывает, как следует хранить непрозрачные внутренние компоненты буфера в отношении порядка байтов. 
     /// </summary>
     internal enum SecureBufferDataRep : int
     {
         /// <summary>
-        /// Buffers internals are to be stored in the machine native byte order, which will change depending on
-        /// what machine generated the buffer.
+        /// Внутренние элементы буферов должны храниться в машинном порядке байтов, который будет меняться в зависимости от
+        /// какая машина сгенерировала буфер. 
         /// </summary>
         Native = 0x10,
 
         /// <summary>
-        /// Buffers are stored in network byte ordering, that is, big endian format.
+        /// Буферы хранятся в сетевом порядке байтов, то есть в формате с прямым порядком байтов. 
         /// </summary>
         Network = 0x00
     }

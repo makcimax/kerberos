@@ -3,49 +3,49 @@
 namespace NSspi.Buffers
 {
     /// <summary>
-    /// Describes the type and purpose of a secure buffer passed to the native API.
+    /// Описывает тип и назначение безопасного буфера, передаваемого в собственный API. 
     /// </summary>
     internal enum BufferType : int
     {
         /// <summary>
-        /// The buffer is empty.
+        /// Буфер пуст. 
         /// </summary>
         Empty = 0x00,
 
         /// <summary>
-        /// The buffer contains message data. Message data can be plaintext or cipher text data.
+        /// Буфер содержит данные сообщения. Данные сообщения могут быть в виде открытого текста или зашифрованного текста. 
         /// </summary>
         Data = 0x01,
 
         /// <summary>
-        /// The buffer contains opaque authentication token data.
+        /// Буфер содержит непрозрачные данные токена аутентификации. 
         /// </summary>
         Token = 0x02,
 
         /// <summary>
-        /// The buffer contains parameters specific to the security package.
+        /// Буфер содержит параметры, специфичные для пакета безопасности. 
         /// </summary>
         Parameters = 0x03,
 
         /// <summary>
-        /// The buffer placeholder indicating that some data is missing.
+        /// Заполнитель буфера, указывающий на отсутствие некоторых данных. 
         /// </summary>
         Missing = 0x04,
 
         /// <summary>
-        /// The buffer passed to an API call contained more data than was necessary for completing the action,
-        /// such as the case when a streaming-mode connection that does not preserve message bounders, such as TCP
-        /// is used as the transport. The extra data is returned back to the caller in a buffer of this type.
+        /// Буфер, переданный вызову API, содержал больше данных, чем необходимо для выполнения действия,
+        /// например, в случае, когда соединение в потоковом режиме, которое не сохраняет пакеты сообщений, такие как TCP
+        /// используется как транспорт. Дополнительные данные возвращаются вызывающей стороне в буфере этого типа. 
         /// </summary>
         Extra = 0x05,
 
         /// <summary>
-        /// The buffer contains a security data trailer, such as a message signature or marker, or framing data.
+        /// Буфер содержит трейлер данных безопасности, такой как подпись сообщения или маркер, или данные кадрирования. 
         /// </summary>
         Trailer = 0x06,
 
         /// <summary>
-        /// The buffer contains a security data header, such as a message signature, marker, or framing data.
+        /// Буфер содержит заголовок данных безопасности, например подпись сообщения, маркер или данные кадрирования. 
         /// </summary>
         Header = 0x07,
 

@@ -3,22 +3,22 @@
 namespace NSspi
 {
     /// <summary>
-    /// Provides canonical names for security pacakges.
+    /// Предоставляет канонические имена для пакетов безопасности. 
     /// </summary>
     public static class PackageNames
     {
         /// <summary>
-        /// Indicates the Negotiate security package.
+        /// Указывает пакет безопасности Negotiate. 
         /// </summary>
         public const string Negotiate = "Negotiate";
 
         /// <summary>
-        /// Indicates the Kerberos security package.
+        /// Указывает пакет безопасности Kerberos. 
         /// </summary>
         public const string Kerberos = "Kerberos";
 
         /// <summary>
-        /// Indicates the NTLM security package.
+        /// Указывает на пакет безопасности NTLM. 
         /// </summary>
         public const string Ntlm = "NTLM";
     }

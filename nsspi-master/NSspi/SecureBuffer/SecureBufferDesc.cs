@@ -4,29 +4,29 @@ using System.Runtime.InteropServices;
 namespace NSspi.Buffers
 {
     /// <summary>
-    /// Represents the native layout of the secure buffer descriptor that is provided directly
-    /// to native API calls.
+    /// Представляет собственный макет дескриптора безопасного буфера, который предоставляется напрямую
+    /// к собственным вызовам API. 
     /// </summary>
     [StructLayout( LayoutKind.Sequential )]
     internal struct SecureBufferDescInternal
     {
         /// <summary>
-        /// The buffer structure version.
+        /// Версия буферной структуры. 
         /// </summary>
         public int Version;
 
         /// <summary>
-        /// The number of buffers represented by this descriptor.
+        /// Количество буферов, представленных этим дескриптором. 
         /// </summary>
         public int NumBuffers;
 
         /// <summary>
-        /// A pointer to a array of buffers, where each buffer is a byte[].
+        /// Указатель на массив буферов, где каждый буфер представляет собой byte []. 
         /// </summary>
         public IntPtr Buffers;
 
         /// <summary>
-        /// Indicates the buffer structure version supported by this structure. Always 0.
+        /// Указывает версию структуры буфера, поддерживаемую этой структурой. Всегда 0. 
         /// </summary>
         public const int ApiVersion = 0;
     }

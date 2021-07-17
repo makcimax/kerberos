@@ -5,14 +5,14 @@ using System.Runtime.InteropServices;
 namespace NSspi
 {
     /// <summary>
-    /// Queries information about security packages.
+    /// Запрашивает информацию о пакетах безопасности. 
     /// </summary>
     public static class PackageSupport
     {
         /// <summary>
-        /// Returns the properties of the named package.
+        /// Возвращает свойства названного пакета. 
         /// </summary>
-        /// <param name="packageName">The name of the package.</param>
+        /// <param name="packageName">Название пакета. </param>
         /// <returns></returns>
         public static SecPkgInfo GetPackageCapabilities( string packageName )
         {
@@ -37,7 +37,7 @@ namespace NSspi
                     {
                         if( status == SecurityStatus.OK )
                         {
-                            // This performs allocations as it makes room for the strings contained in the SecPkgInfo class.
+                            // Выполняется выделение памяти, так как освобождается место для строк, содержащихся в классе SecPkgInfo. 
                             Marshal.PtrToStructure( rawInfoPtr, info );
                         }
                     }
@@ -57,7 +57,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Returns a list of all known security package providers and their properties.
+        /// Возвращает список всех известных поставщиков пакетов безопасности и их свойств. 
         /// </summary>
         /// <returns></returns>
         public static SecPkgInfo[] EnumeratePackages()
@@ -83,12 +83,10 @@ namespace NSspi
                     {
                         if( status == SecurityStatus.OK )
                         {
-                            // Bwooop Bwooop Alocation Alert
-                            // 1) We allocate the array
-                            // 2) We allocate the individual elements in the array (they're class objects).
-                            // 3) We allocate the strings in the individual elements in the array when we
-                            //    call Marshal.PtrToStructure()
-
+                            // 1) Выделяем массив
+                            // 2) Мы выделяем отдельные элементы в массиве (это объекты класса).
+                            // 3) Мы выделяем строки в отдельные элементы в массиве, когда мы
+                            //когда мы вызываем Marshal.PtrToStructure() 
                             packages = new SecPkgInfo[numPackages];
 
                             for( int i = 0; i < numPackages; i++ )

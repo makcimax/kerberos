@@ -38,66 +38,70 @@ namespace NSspi.Buffers
     /// реализует IDisposable, чтобы знать, когда маршалировать значения обратно из неуправляемых структур и в
     /// освобождаем закрепленные ручки. 
     ///
-    /// Additionally, in case the adapter is leaked without disposing, the adapter implements a Critical
-    /// Finalizer, to ensure that the GCHandles are released, else we will permanently pin handles.
+    /// Кроме того, в случае утечки адаптера без утилизации, адаптер реализует Critical
+    /// Finalizer, чтобы гарантировать, что GCHandles освобождены, иначе мы навсегда закрепим дескрипторы. 
     ///
-    /// The typical flow is to take one or many buffers; create and fill the neccessary unmanaged structures;
-    /// pin memory; acquire the IntPtr handles; let the caller access the top-level IntPtr representing
-    /// the SecureBufferDescriptor, to provide to the native APIs; wait for the caller to invoke the native
-    /// API; wait for the caller to invoke our Dispose; marshal back any data from the native structures
-    /// (buffer write counts); release all GCHandles to unpin memory.
+    /// Типичный поток состоит из одного или нескольких буферов; 
+    /// для того чтобы создавать и заполнять необходимые неуправляемые структуры;
+    /// пин-память;
+    /// получить дескрипторы IntPtr;
+    /// позвольте вызывающей стороне получить доступ к IntPtr верхнего уровня, представляющему
+    /// SecureBufferDescriptor для предоставления встроенным API; 
+    /// подождите, пока вызывающий вызовет родной
+    /// API; дождитесь, пока вызывающий объект вызовет наш Dispose;
+    /// маршалинг любых данных из собственных структур
+    /// (счетчик записи в буфер); отпустите все GCHandles, чтобы открепить память. 
     ///
-    /// The total descriptor structure is as follows:
-    /// |-- Descriptor handle
-    ///     |-- Array of buffers
-    ///         |-- Buffer 1
-    ///         |-- Buffer 2
-    ///         ...
-    ///         |-- Buffer N.
+    ///Общая структура дескриптора выглядит следующим образом:
+    /// | - Дескриптор дескриптора
+    /// | - Массив буферов
+    /// | - Буфер 1
+    /// | - Буфер 2
+    /// ...
+    /// | - Буфер N. 
     ///
-    /// Each object in that structure must be pinned and passed as an IntPtr to the native APIs.
-    /// All this to pass what boils down to a List of byte arrays..
+    /// Каждый объект в этой структуре должен быть закреплен и передан как IntPtr в собственные API.
+    /// Все это для передачи того, что сводится к списку байтовых массивов .. 
     /// </remarks>
     internal sealed class SecureBufferAdapter : CriticalFinalizerObject, IDisposable
     {
         /// <summary>
-        /// Whether the adapter has already been disposed.
+        /// Был ли адаптер утилизирован. 
         /// </summary>
         private bool disposed;
 
         /// <summary>
-        /// The list of mananged SecureBuffers the caller provided to us.
+        /// Список управляемых безопасных буферов, предоставленный нам вызывающей стороной. 
         /// </summary>
         private IList<SecureBuffer> buffers;
 
         /// <summary>
-        /// The top level handle representing the entire descriptor.
+        /// Дескриптор верхнего уровня, представляющий весь дескриптор. 
         /// </summary>
         private GCHandle descriptorHandle;
 
         /// <summary>
-        /// The handle representing the array of buffers.
+        /// Дескриптор, представляющий массив буферов. 
         /// </summary>
         private GCHandle bufferCarrierHandle;
 
         /// <summary>
-        /// The handles representing each actual buffer.
+        /// Дескрипторы, представляющие каждый фактический буфер. 
         /// </summary>
         private GCHandle[] bufferHandles;
 
         /// <summary>
-        /// The native buffer descriptor
+        /// Дескриптор собственного буфера 
         /// </summary>
         private SecureBufferDescInternal descriptor;
 
         /// <summary>
-        /// An array of the native buffers.
+        /// Массив собственных буферов. 
         /// </summary>
         private SecureBufferInternal[] bufferCarrier;
 
         /// <summary>
-        /// Initializes a SecureBufferAdapter to carry a single buffer to the native api.
-        /// </summary>
+        /// Инициализирует SecureBufferAdapter для переноса одного буфера в собственный API.
         /// <param name="buffer"></param>
         public SecureBufferAdapter( SecureBuffer buffer )
             : this( new[] { buffer } )
@@ -105,7 +109,7 @@ namespace NSspi.Buffers
         }
 
         /// <summary>
-        /// Initializes the SecureBufferAdapter to carry a list of buffers to the native api.
+        /// Инициализирует SecureBufferAdapter для передачи списка буферов в собственный api. 
         /// </summary>
         /// <param name="buffers"></param>
         public SecureBufferAdapter( IList<SecureBuffer> buffers ) : base()
@@ -140,14 +144,14 @@ namespace NSspi.Buffers
         [ReliabilityContract( Consistency.WillNotCorruptState, Cer.Success )]
         ~SecureBufferAdapter()
         {
-            // We bend the typical Dispose pattern here. This finalizer runs in a Constrained Execution Region,
-            // and so we shouldn't call virtual methods. There's no need to extend this class, so we prevent it
-            // and mark the protected Dispose method as non-virtual.
+            // Здесь мы изменяем типичный паттерн Dispose. Этот финализатор работает в области ограниченного выполнения,
+            // и поэтому мы не должны вызывать виртуальные методы. Нет необходимости расширять этот класс, поэтому мы его предотвращаем.
+            // и помечаем защищенный метод Dispose как не виртуальный. 
             Dispose( false );
         }
 
         /// <summary>
-        /// Gets the top-level pointer to the secure buffer descriptor to pass to the native API.
+        /// Получает указатель верхнего уровня на дескриптор безопасного буфера для передачи в собственный API. 
         /// </summary>
         public IntPtr Handle
         {
@@ -163,7 +167,7 @@ namespace NSspi.Buffers
         }
 
         /// <summary>
-        /// Completes any buffer passing marshaling and releases all resources associated with the adapter.
+        /// Завершает любой маршалинг передачи буфера и освобождает все ресурсы, связанные с адаптером. 
         /// </summary>
         public void Dispose()
         {
@@ -172,12 +176,12 @@ namespace NSspi.Buffers
         }
 
         /// <summary>
-        /// Completes any buffer passing marshaling and releases all resources associated with the adapter.
-        /// This may be called by the finalizer, or by the regular Dispose method. In the case of the finalizer,
-        /// we've been leaked and there's no point in attempting to marshal back data from the native structures,
-        /// nor should we anyway since they may be gone.
+        /// Завершает любой маршалинг передачи буфера и освобождает все ресурсы, связанные с адаптером.
+        /// Это может быть вызвано финализатором или обычным методом Dispose. В случае финализатора
+        /// произошла утечка информации, и нет смысла пытаться маршалировать данные из нативных структур,
+        /// мы и не должны, так как они могут исчезнуть. 
         /// </summary>
-        /// <param name="disposing">Whether Dispose is being called.</param>
+        /// <param name="disposing">Вызывается ли Dispose. </param>
         [ReliabilityContract( Consistency.WillNotCorruptState, Cer.Success )]
         private void Dispose( bool disposing )
         {
@@ -185,10 +189,10 @@ namespace NSspi.Buffers
 
             if( disposing )
             {
-                // When this class is actually being used for its original purpose - to convey buffers
-                // back and forth to SSPI calls - we need to copy the potentially modified structure members
-                // back to our caller's buffer.
-                for( int i = 0; i < this.buffers.Count; i++ )
+                // Когда этот класс фактически используется по своему первоначальному назначению - для передачи буферов
+                // туда и обратно к вызовам SSPI - нам нужно скопировать потенциально измененные элементы структуры
+                // назад в буфер нашего вызывающего абонента. 
+                for ( int i = 0; i < this.buffers.Count; i++ )
                 {
                     this.buffers[i].Length = this.bufferCarrier[i].Count;
                 }

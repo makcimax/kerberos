@@ -3,14 +3,14 @@
 namespace NSspi
 {
     /// <summary>
-    /// Reads and writes value types to byte arrays with explicit endianness.
+    /// Читает и записывает типы значений в байтовые массивы с явным порядком байтов. 
     /// </summary>
     public static class ByteWriter
     {
-        // Big endian: Most significant byte at lowest address in memory.
+        //Big endian: старший байт по наименьшему адресу в памяти. 
 
         /// <summary>
-        /// Writes a 2-byte signed integer to the buffer in big-endian format.
+        /// Записывает в буфер 2-байтовое целое число со знаком в формате big-endian. 
         /// </summary>
         /// <param name="value">The value to write to the buffer.</param>
         /// <param name="buffer">The buffer to write to.</param>
@@ -22,11 +22,11 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Writes a 4-byte signed integer to the buffer in big-endian format.
+        /// Записывает в буфер 4-байтовое целое число со знаком в формате big-endian. 
         /// </summary>
-        /// <param name="value">The value to write to the buffer.</param>
-        /// <param name="buffer">The buffer to write to.</param>
-        /// <param name="position">The index of the first byte to write to.</param>
+        /// <param name="value">Значение для записи в буфер. </param>
+        /// <param name="buffer">Буфер для записи. </param>
+        /// <param name="position">Индекс первого байта для записи. </param>
         public static void WriteInt32_BE( Int32 value, byte[] buffer, int position )
         {
             buffer[position + 0] = (byte)( value >> 24 );
@@ -36,11 +36,11 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Reads a 2-byte signed integer that is stored in the buffer in big-endian format.
-        /// The returned value is in the native endianness.
+        /// Считывает 2-байтовое целое число со знаком, которое хранится в буфере в формате с прямым порядком байтов.
+        /// Возвращаемое значение имеет собственный порядок байтов. 
         /// </summary>
-        /// <param name="buffer">The buffer to read.</param>
-        /// <param name="position">The index of the first byte to read.</param>
+        /// <param name="buffer">Буфер для чтения. </param>
+        /// <param name="position">Индекс первого читаемого байта. </param>
         /// <returns></returns>
         public static Int16 ReadInt16_BE( byte[] buffer, int position )
         {
@@ -53,11 +53,11 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Reads a 4-byte signed integer that is stored in the buffer in big-endian format.
-        /// The returned value is in the native endianness.
+        /// Считывает 4-байтовое целое число со знаком, которое хранится в буфере в формате с прямым порядком байтов.
+        /// Возвращаемое значение имеет собственный порядок байтов. 
         /// </summary>
-        /// <param name="buffer">The buffer to read.</param>
-        /// <param name="position">The index of the first byte to read.</param>
+        /// <param name="buffer">Буфер для чтения. </param>
+        /// <param name="position">Индекс первого читаемого байта. </param>
         /// <returns></returns>
         public static Int32 ReadInt32_BE( byte[] buffer, int position )
         {
