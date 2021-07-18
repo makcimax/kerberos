@@ -31,7 +31,7 @@ namespace TestServer
         {
             InitializeComponent();
 
-            this.serverCred = new ServerCurrentCredential( PackageNames.Kerberos );
+            this.serverCred = new ServerCurrentCredential( PackageNames.Negotiate );
 
             this.serverContext = new ServerContext(
                 serverCred,

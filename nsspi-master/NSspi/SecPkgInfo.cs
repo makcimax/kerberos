@@ -43,120 +43,120 @@ namespace NSspi
     }
 
     /// <summary>
-    /// Describes the capabilities of a security package.
+    /// Описывает возможности пакета безопасности
     /// </summary>
     [Flags]
     public enum SecPkgCapability : uint
     {
         /// <summary>
-        /// Whether the package supports generating messages with integrity information. Required for MakeSignature and VerifySignature.
+        /// Поддерживает ли пакет создание сообщений с информацией о целостности. Требуется для MakeSignature и VerifySignature.
         /// </summary>
         Integrity = 0x1,
 
         /// <summary>
-        /// Whether the package supports generating encrypted messages. Required for EncryptMessage and DecryptMessage.
+        /// Поддерживает ли пакет создание зашифрованных сообщений. Требуется для EncryptMessage и DecryptMessage.
         /// </summary>
         Privacy = 0x2,
 
         /// <summary>
-        /// Whether the package uses any other buffer information than token buffers.
+        /// Использует ли пакет какую-либо другую информацию о буфере, кроме буферов токенов.
         /// </summary>
         TokenOnly = 0x4,
 
         /// <summary>
-        /// Whether the package supports datagram-style authentication.
+        /// Поддерживает ли пакет аутентификацию в стиле дейтаграммы.
         /// </summary>
         Datagram = 0x8,
 
         /// <summary>
-        /// Whether the package supports creating contexts with connection semantics
+        /// Поддерживает ли пакет создание контекстов с семантикой соединения
         /// </summary>
         Connection = 0x10,
 
         /// <summary>
-        /// Multiple legs are neccessary for authentication.
+        /// Для аутентификации необходимо несколько ветвей.
         /// </summary>
         MultiLeg = 0x20,
 
         /// <summary>
-        /// Server authentication is not supported.
+        /// Аутентификация сервера не поддерживается..
         /// </summary>
         ClientOnly = 0x40,
 
         /// <summary>
-        /// Supports extended error handling facilities.
+        /// Поддерживает расширенные средства обработки ошибок.
         /// </summary>
         ExtendedError = 0x80,
 
         /// <summary>
-        /// Supports client impersonation on the server.
+        /// Поддерживает олицетворение клиента на сервере.
         /// </summary>
         Impersonation = 0x100,
 
         /// <summary>
-        /// Understands Windows princple and target names.
+        /// Понимает основные и целевые имена Windows.
         /// </summary>
         AcceptWin32Name = 0x200,
 
         /// <summary>
-        /// Supports stream semantics
+        /// Поддерживает семантику потока
         /// </summary>
         Stream = 0x400,
 
         /// <summary>
-        /// Package may be used by the Negiotiate meta-package.
+        /// Пакет может использоваться мета-пакетом Negiotiate. 
         /// </summary>
         Negotiable = 0x800,
 
         /// <summary>
-        /// Compatible with GSS.
+        /// Совместим с GSS. 
         /// </summary>
         GssCompatible = 0x1000,
 
         /// <summary>
-        /// Supports LsaLogonUser
+        /// Поддерживает LsaLogonUser 
         /// </summary>
         Logon = 0x2000,
 
         /// <summary>
-        /// Token buffers are in Ascii format.
+        /// Буферы токенов имеют формат Ascii. 
         /// </summary>
         AsciiBuffers = 0x4000,
 
         /// <summary>
-        /// Supports separating large tokens into multiple buffers.
+        /// Поддерживает разделение больших токенов на несколько буферов.
         /// </summary>
         Fragment = 0x8000,
 
         /// <summary>
-        /// Supports mutual authentication between a client and server.
+        /// Поддерживает взаимную аутентификацию между клиентом и сервером. 
         /// </summary>
         MutualAuth = 0x10000,
 
         /// <summary>
-        /// Supports credential delegation from the server to a third context.
+        /// Поддерживает делегирование учетных данных с сервера в третий контекст. 
         /// </summary>
         Delegation = 0x20000,
 
         /// <summary>
-        /// Supports calling EncryptMessage with the read-only-checksum flag, which protects data only
-        /// with a checksum and does not encrypt it.
+        /// Поддерживает вызов EncryptMessage с флагом контрольной суммы только для чтения, который защищает только данные
+        /// с контрольной суммой и не шифрует ее. 
         /// </summary>
         ReadOnlyChecksum = 0x40000,
 
         /// <summary>
-        /// Whether the package supports handling restricted tokens, which are tokens derived from existing tokens
-        /// that have had restrictions placed on them.
+        /// Поддерживает ли пакет обработку ограниченных токенов, которые являются токенами, производными от существующих токенов.
+        /// на которые наложены ограничения. 
         /// </summary>
         RestrictedTokens = 0x80000,
 
         /// <summary>
-        /// Extends the negotiate package; only one such package may be registered at any time.
+        /// Расширяет переговорный пакет; единовременно может быть зарегистрирован только один такой пакет. 
         /// </summary>
         ExtendsNego = 0x00100000,
 
         /// <summary>
-        /// This package is negotiated by the package of type ExtendsNego.
+        /// Этот пакет согласовывается с пакетом типа ExtendsNego. 
         /// </summary>
         Negotiable2 = 0x00200000,
     }

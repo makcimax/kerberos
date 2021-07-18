@@ -103,7 +103,7 @@ namespace TestProtocol
                            e.SocketErrorCode == SocketError.OperationAborted ||
                            e.SocketErrorCode == SocketError.Shutdown )
                         {
-                            // Shutting down.
+                            // Выключение.
                             break;
                         }
                         else
@@ -147,19 +147,19 @@ namespace TestProtocol
             {
                 try
                 {
-                    //                          |--4 bytes--|--4 bytes--|---N--|
-                    // Every command is a TLV - | Operation |  Length   | Data |
+                    //                            |--4 bytes--|--4 bytes--|---N--- |
+                    // Каждая команда - это TLV - | Операция  |    Длина  | Данные | 
                     int chunkLength;
 
-                    // Read the operation.
+                    // Прочтите операцию.    
                     this.readSocket.Receive( readBuffer, 4, SocketFlags.None );
 
-                    // Check if we popped out of a receive call after we were shut down.
-                    if( this.running == false ) { break; }
+                    // Проверьте, вышли ли мы из принимающего звонка после того, как нас отключили. 
+                    if ( this.running == false ) { break; }
 
                     operation = (ProtocolOp)ByteWriter.ReadInt32_BE( readBuffer, 0 );
 
-                    // Read the length
+                    // Читаем длину 
                     this.readSocket.Receive( readBuffer, 4, SocketFlags.None );
                     messageLength = ByteWriter.ReadInt32_BE( readBuffer, 0 );
 
@@ -168,8 +168,8 @@ namespace TestProtocol
                         readBuffer = new byte[messageLength];
                     }
 
-                    // Read the data
-                    // Keep in mind that Socket.Receive may return less data than asked for.
+                    // Чтение данных
+                    // Socket.Receive может возвращать меньше данных, чем запрошено. 
                     remaining = messageLength;
                     chunkLength = 0;
                     position = 0;
@@ -188,7 +188,7 @@ namespace TestProtocol
                         e.SocketErrorCode == SocketError.Shutdown ||
                         e.SocketErrorCode == SocketError.ConnectionReset )
                     {
-                        // Shutting down.
+                        // Выключение.
                         break;
                     }
                     else

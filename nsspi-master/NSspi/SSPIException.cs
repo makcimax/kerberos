@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace NSspi
 {
     /// <summary>
-    /// The exception that is thrown when a problem occurs hwen using the SSPI system.
+    /// Исключение, которое выдается при возникновении проблемы при использовании системы SSPI. 
     /// </summary>
     [Serializable]
     public class SSPIException : Exception
@@ -13,10 +13,10 @@ namespace NSspi
         private string message;
 
         /// <summary>
-        /// Initializes a new instance of the SSPIException class with the given message and status.
+        /// Инициализирует новый экземпляр класса SSPIException с заданным сообщением и статусом. 
         /// </summary>
-        /// <param name="message">A message explaining what part of the system failed.</param>
-        /// <param name="errorCode">The error code observed during the failure.</param>
+        /// <param name="message">Сообщение, объясняющее, какая часть системы вышла из строя. </param>
+        /// <param name="errorCode">Код ошибки, наблюдаемый во время сбоя.</param>
         public SSPIException( string message, SecurityStatus errorCode )
         {
             this.message = message;
@@ -24,7 +24,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Initializes a new instance of the SSPIException class from serialization data.
+        /// Инициализирует новый экземпляр класса SSPIException из данных сериализации.
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
@@ -36,7 +36,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Serializes the exception.
+        /// Сериализует исключение. 
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
@@ -49,7 +49,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// The error code that was observed during the SSPI call.
+        /// Код ошибки, обнаруженный во время вызова SSPI. 
         /// </summary>
         public SecurityStatus ErrorCode
         {
@@ -60,7 +60,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// A human-readable message indicating the nature of the exception.
+        /// Сообщение, удобочитаемое для чтения, с указанием характера исключения. 
         /// </summary>
         public override string Message
         {

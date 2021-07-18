@@ -4,37 +4,37 @@ using System.Runtime.InteropServices;
 namespace NSspi
 {
     /// <summary>
-    /// Represents a Windows API Timestamp structure, which stores time in units of 100 nanosecond
-    /// ticks, counting from January 1st, year 1601 at 00:00 UTC. Time is stored as a 64-bit value.
+    /// Представляет структуру отметки времени Windows API, в которой время хранится в единицах 100 наносекунды.
+    /// тиков, считая с 1 января 1601 года в 00:00 UTC. Время хранится как 64-битное значение. 
     /// </summary>
     [StructLayout( LayoutKind.Sequential )]
     public struct TimeStamp
     {
         /// <summary>
-        /// Returns the calendar date and time corresponding a zero timestamp.
+        /// Возвращает календарную дату и время, соответствующие нулевой отметке времени. 
         /// </summary>
         public static readonly DateTime Epoch = new DateTime( 1601, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
         /// <summary>
-        /// Stores the time value. Infinite times are often represented as values near, but not exactly
-        /// at the maximum signed 64-bit 2's complement value.
+        /// Сохраняет значение времени. Бесконечное время часто представляется как близкое, но не совсем точное значение.
+        /// при максимальном знаковом 64-битном значении дополнения до 2. 
         /// </summary>
         private long time;
 
         /// <summary>
-        /// Converts the TimeStamp to an equivalant DateTime object. If the TimeStamp represents
-        /// a value larger than DateTime.MaxValue, then DateTime.MaxValue is returned.
+        /// Преобразует TimeStamp в эквивалентный объект DateTime. Если TimeStamp представляет
+        /// значение больше DateTime.MaxValue, тогда возвращается DateTime.MaxValue. 
         /// </summary>
         /// <returns></returns>
         public DateTime ToDateTime()
         {
             ulong test = (ulong)this.time + (ulong)( Epoch.Ticks );
 
-            // Sometimes the value returned is massive, eg, 0x7fffff154e84ffff, which is a value
-            // somewhere in the year 30848. This would overflow DateTime, since it peaks at 31-Dec-9999.
-            // It turns out that this value corresponds to a TimeStamp's maximum value, reduced by my local timezone
+            // Иногда возвращается массивное значение, например 0x7fffff154e84ffff, что является значением
+            // где-то в 30848 году. Это приведет к переполнению DateTime, поскольку его пик приходится на 31 декабря 9999 года.
+            // Оказывается, это значение соответствует максимальному значению TimeStamp, уменьшенному на мой местный часовой пояс 
             // http://stackoverflow.com/questions/24478056/
-            if( test > (ulong)DateTime.MaxValue.Ticks )
+            if ( test > (ulong)DateTime.MaxValue.Ticks )
             {
                 return DateTime.MaxValue;
             }

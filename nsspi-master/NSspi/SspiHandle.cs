@@ -5,19 +5,19 @@ using System.Runtime.InteropServices;
 namespace NSspi
 {
     /// <summary>
-    /// Represents the raw structure for any handle created for the SSPI API, for example, credential
-    /// handles, context handles, and security package handles. Any SSPI handle is always the size
-    /// of two native pointers.
+    /// Представляет необработанную структуру для любого дескриптора, созданного для API SSPI, например учетных данных
+    /// дескрипторы, дескрипторы контекста и дескрипторы пакетов безопасности. Любой дескриптор SSPI всегда имеет размер
+    /// двух собственных указателей. 
     /// </summary>
     /// <remarks>
-    /// The documentation for SSPI handles can be found here:
+    /// Документацию для дескрипторов SSPI можно найти здесь: 
     /// http://msdn.microsoft.com/en-us/library/windows/desktop/aa380495(v=vs.85).aspx
     ///
-    /// This class is not reference safe - if used directly, or referenced directly, it may be leaked,
-    /// or subject to finalizer races, or any of the hundred of things SafeHandles were designed to fix.
-    /// Do not directly use this class - use only though SafeHandle wrapper objects. Any reference needed
-    /// to this handle for performing work (InitializeSecurityContext, eg) should be performed a CER
-    /// that employs handle reference counting across the native API invocation.
+    /// Этот класс небезопасен по ссылкам - при прямом использовании или прямой ссылке на него может произойти утечка,
+    /// или в зависимости от гонки финализаторов, или любой из сотен вещей, которые SafeHandles были разработаны для исправления.
+    /// Не используйте этот класс напрямую - используйте только объекты оболочки SafeHandle. Любая ссылка необходима
+    /// к этому дескриптору для выполнения работы (например, InitializeSecurityContext) должен выполняться CER
+    /// который использует подсчет ссылок на дескрипторы при вызове собственного API. 
     /// </remarks>
     [StructLayout( LayoutKind.Sequential, Pack = 1 )]
     internal struct RawSspiHandle
@@ -26,7 +26,7 @@ namespace NSspi
         private IntPtr highPart;
 
         /// <summary>
-        /// Returns whether or not the handle is set to the default, empty value.
+        /// Возвращает независимо от того, установлен ли дескриптор в пустое значение по умолчанию. 
         /// </summary>
         /// <returns></returns>
         public bool IsZero()
@@ -35,10 +35,10 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Sets the handle to an invalid value.
+        /// Устанавливает дескриптор на недопустимое значение. 
         /// </summary>
         /// <remarks>
-        /// This method is executed in a CER during handle release.
+        /// Этот метод выполняется в CER во время освобождения ручки. 
         /// </remarks>
         [ReliabilityContract( Consistency.WillNotCorruptState, Cer.Success )]
         public void SetInvalid()
@@ -49,14 +49,14 @@ namespace NSspi
     }
 
     /// <summary>
-    /// Safely encapsulates a raw handle used in the SSPI api.
+    /// Безопасно инкапсулирует необработанный дескриптор, используемый в API SSPI. 
     /// </summary>
     public abstract class SafeSspiHandle : SafeHandle
     {
         internal RawSspiHandle rawHandle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SafeSspiHandle"/> class.
+        /// Инициализирует новый экземпляр класса <see cref = "SafeSspiHandle" />. 
         /// </summary>
         protected SafeSspiHandle()
             : base( IntPtr.Zero, true )
@@ -65,7 +65,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Gets whether the handle is invalid.
+        /// Получает, является ли дескриптор недействительным. 
         /// </summary>
         public override bool IsInvalid
         {
@@ -73,7 +73,7 @@ namespace NSspi
         }
 
         /// <summary>
-        /// Marks the handle as no longer being in use.
+        /// Отмечает ручку как неиспользуемую.
         /// </summary>
         /// <returns></returns>
         [ReliabilityContract( Consistency.WillNotCorruptState, Cer.Success )]
